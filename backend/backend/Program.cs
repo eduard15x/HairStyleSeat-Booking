@@ -1,5 +1,7 @@
 
 using backend.Data;
+using backend.Repositories.AuthRepository;
+using backend.Services.AuthService;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -24,6 +26,9 @@ namespace backend
 
             // services
             builder.Services.AddScoped<IDbConnection>(x => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
