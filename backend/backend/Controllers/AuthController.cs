@@ -1,8 +1,6 @@
 ﻿using backend.Dtos.Auth;
-using backend.Models.Auth;
 using backend.Services.AuthService;
 using backend.Services.TokenService;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
