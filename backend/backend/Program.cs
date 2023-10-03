@@ -1,7 +1,9 @@
 
 using backend.Data;
 using backend.Repositories.AuthRepository;
+using backend.Repositories.SalonRepository;
 using backend.Services.AuthService;
+using backend.Services.SalonService;
 using backend.Services.TokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
@@ -33,6 +35,8 @@ namespace backend
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            builder.Services.AddScoped<ISalonService, SalonService>();
+            builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 
             builder.Services.AddAuthentication(x =>
             {
@@ -65,6 +69,8 @@ namespace backend
               });
 
             builder.Services.AddAuthorization();
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

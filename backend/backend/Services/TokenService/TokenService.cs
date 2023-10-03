@@ -23,7 +23,7 @@ namespace backend.Services.TokenService
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("email", user.Email), new Claim(ClaimTypes.Role, user.Role) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("email", user.Email), new Claim(ClaimTypes.Role, user.Role), new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
