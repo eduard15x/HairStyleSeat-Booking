@@ -6,5 +6,6 @@ namespace backend.Services.AuthService
     public interface IAuthService
     {
         Task<User> Register(RegisterUserDto registerUserDto);
+        Task<UserTokenDto> Login(LoginUserDto userCredentials);
     }
 }

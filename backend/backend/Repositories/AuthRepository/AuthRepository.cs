@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using backend.Dtos.Auth;
 using backend.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,25 @@ namespace backend.Repositories.AuthRepository
             await _dbContext.SaveChangesAsync();
 
             return newUserRegistered;
+        }
+
+        public async Task<User> Login(LoginUserDto userCredentials)
+        {
+            var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userCredentials.Email);
+            
+            if (userFromDb == null)
+            {
+                throw new Exception("Email doesn't exist.");
+            }
+
+            var verifyPassword = BCrypt.Net.BCrypt.Verify(userCredentials.Password, userFromDb.Password);
+
+            if (!verifyPassword)
+            {
+                throw new Exception("Password is wrong.");
+            }
+
+            return userFromDb;
         }
     }
 }
