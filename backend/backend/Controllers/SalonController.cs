@@ -58,7 +58,7 @@ namespace backend.Controllers
             try
             {
                 var response = await _salonService.GetSingleSalonDetails(salonId);
-                return Json(Ok("Detaliile salonului"));
+                return Json(Ok(response));
             }
             catch (Exception ex)
             {

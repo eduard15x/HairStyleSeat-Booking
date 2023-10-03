@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using backend.Dtos.Auth;
 using backend.Dtos.Salon;
 using backend.Models.Salon;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,12 @@ namespace backend.Repositories.SalonRepository
                 SalonName = newSalonDetails.SalonName,
                 SalonCity = newSalonDetails.SalonCity,
                 SalonAddress = newSalonDetails.SalonAddress,
-                HairstylistName = userFromDb.UserName
+                UserDetails = new UsersSalonsDetailsDto
+                {
+                    UserName = userFromDb.UserName,
+                    Email = userFromDb.Email,
+                    PhoneNumber = userFromDb.PhoneNumber
+                }
             };
         }
 
@@ -55,9 +61,30 @@ namespace backend.Repositories.SalonRepository
             throw new NotImplementedException();
         }
 
-        public Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
+        public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
         {
-            throw new NotImplementedException();
+            var salonDetails = await _context.Salons
+                .Where(s => s.Id == salonId)
+                .Select(u => new GetSingleSalonDto
+                {
+                    SalonName = u.SalonName,
+                    SalonCity = u.SalonCity,
+                    SalonAddress = u.SalonAddress,
+                    UserDetails = new UsersSalonsDetailsDto
+                    {
+                        UserName = u.User.UserName,
+                        Email = u.User.Email,
+                        PhoneNumber = u.User.PhoneNumber
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            if (salonDetails is null)
+            {
+                throw new Exception("Salon doesn't exist");
+            }
+
+            return salonDetails;
         }
     }
 }

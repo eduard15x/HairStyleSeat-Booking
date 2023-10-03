@@ -34,7 +34,12 @@ namespace backend.Services.SalonService
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
         {
-            throw new NotImplementedException();
+            if (salonId <= 0)
+            {
+                throw new Exception("Salon not found");
+            }
+
+            return await _salonRepository.GetSingleSalonDetails(salonId);
         }
     }
 }
