@@ -1,4 +1,5 @@
 ﻿using backend.Models.Auth;
+using backend.Models.Salon;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data
@@ -9,5 +10,6 @@ namespace backend.Data
         {}
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Salon> Salons { get; set; }
     }
 }
