@@ -17,6 +17,7 @@ namespace backend.Controllers
         {
             _salonService = salonService;
         }
+
         [Authorize(Roles = "admin, customer, affiliate")]
         [HttpPost("create")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
@@ -37,12 +38,12 @@ namespace backend.Controllers
         [HttpGet("list")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetAllSalons([FromBody] FilterSalonDto filterSalonDto)
+        public async Task<ActionResult> GetAllSalons()
         {
             try
             {
-                var response = await _salonService.GetAllSalons(filterSalonDto);
-                return Json(Ok("Lista cu saloanele in functie de argumente"));
+                var response = await _salonService.GetAllSalons();
+                return Json(Ok(response));
             }
             catch (Exception ex)
             {

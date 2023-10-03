@@ -56,9 +56,16 @@ namespace backend.Repositories.SalonRepository
             };
         }
 
-        public Task<List<GetSingleSalonDto>> GetAllSalons(FilterSalonDto filterSalonDetails)
+        public async Task<List<Salon>> GetAllSalons()
         {
-            throw new NotImplementedException();
+            var salonsListDb = await _context.Salons.ToListAsync();
+
+            if (salonsListDb.Count == 0 || salonsListDb is null)
+            {
+                throw new Exception("No salons in the list.");
+            }
+
+            return salonsListDb;
         }
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)

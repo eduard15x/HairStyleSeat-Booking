@@ -27,9 +27,9 @@ namespace backend.Services.SalonService
             return await _salonRepository.CreateNewSalon(newSalonDetails);
         }
 
-        public async Task<List<GetSingleSalonDto>> GetAllSalons(FilterSalonDto filterSalonDetails)
+        public async Task<dynamic> GetAllSalons()
         {
-            throw new NotImplementedException();
+            return await _salonRepository.GetAllSalons();
         }
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
