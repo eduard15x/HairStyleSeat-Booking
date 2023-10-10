@@ -1,4 +1,5 @@
 ﻿using backend.Dtos.Salon;
+using backend.Models.Salon;
 using backend.Repositories.SalonRepository;
 using System.Security.Claims;
 
@@ -25,6 +26,29 @@ namespace backend.Services.SalonService
             }
 
             return await _salonRepository.CreateNewSalon(newSalonDetails);
+        }
+
+        public async Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updatedSalonDto)
+        {
+            var currentUser = GetUserId();
+
+            if (updatedSalonDto.UserId != currentUser || currentUser == 0)
+            {
+                throw new Exception("Not authorized!");
+            }
+
+            var updatedSalon = new UpdateSalonDto()
+            {
+                Id = updatedSalonDto.Id,
+                SalonName = updatedSalonDto.SalonName,
+                SalonAddress = updatedSalonDto.SalonAddress,
+                SalonCity = updatedSalonDto.SalonCity,
+                UserId = updatedSalonDto.UserId,
+                WorkDays = updatedSalonDto.WorkDays,
+                WorkHoursInterval = updatedSalonDto.WorkHoursInterval,
+            };
+
+            return await _salonRepository.UpdateSalon(updatedSalon);
         }
 
         public async Task<dynamic> GetAllSalons()

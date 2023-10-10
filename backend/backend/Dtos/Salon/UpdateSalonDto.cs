@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Dtos.Salon
 {
-    public class CreateNewSalonDto
+    public class UpdateSalonDto
     {
+        [Required]
+        public int Id { get; set;}
         [Required]
         public string SalonName { get; set; }
         [Required]
@@ -17,7 +18,5 @@ namespace backend.Dtos.Salon
         public string WorkDays { get; set; }
         [Required]
         public string WorkHoursInterval { get; set; }
-        [Column(TypeName = "decimal(2, 1)")]
-        public decimal SalonReviews { get; set; } = 0;
     }
 }

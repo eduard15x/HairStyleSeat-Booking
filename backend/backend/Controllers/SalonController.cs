@@ -35,6 +35,23 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPut("update")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.NotModified)]
+        public async Task<ActionResult> UpdateSalon([FromBody] UpdateSalonDto updatedSalonDto)
+        {
+            try
+            {
+                var response = await _salonService.UpdateSalon(updatedSalonDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
+            }
+        }
+
         [HttpGet("list")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]

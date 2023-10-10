@@ -62,6 +62,51 @@ namespace backend.Repositories.SalonRepository
             };
         }
 
+        public async Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updateSalonDto)
+        {
+            var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == updateSalonDto.UserId);
+            if (userFromDb is null)
+            {
+                throw new Exception("You must be authenticated to be able to update salon's information.");
+            }
+
+            var salonAlreadyExists = await _context.Salons.AnyAsync(s => s.SalonName == updateSalonDto.SalonName);
+            if (salonAlreadyExists)
+            {
+                throw new Exception("Salon with same name already exists.");
+            }
+
+            var existingSalon = await _context.Salons.FirstOrDefaultAsync(s => s.Id == updateSalonDto.Id);
+            if (existingSalon is null)
+            {
+                throw new Exception("Salon was not found.");
+            }
+
+            existingSalon.SalonName = updateSalonDto.SalonName;
+            existingSalon.SalonAddress = updateSalonDto.SalonAddress;
+            existingSalon.SalonCity = updateSalonDto.SalonAddress;
+            existingSalon.WorkDays = updateSalonDto.SalonAddress;
+            existingSalon.WorkHoursInterval = updateSalonDto.SalonAddress;
+
+            await _context.SaveChangesAsync();
+
+            return new GetSingleSalonDto
+            {
+                SalonName = existingSalon.SalonName,
+                SalonCity = existingSalon.SalonCity,
+                SalonAddress = existingSalon.SalonAddress,
+                WorkDays = existingSalon.WorkDays,
+                WorkHoursInterval = existingSalon.WorkHoursInterval,
+                SalonReviews = existingSalon.SalonReviews,
+                UserDetails = new UsersSalonsDetailsDto
+                {
+                    UserName = userFromDb.UserName,
+                    Email = userFromDb.Email,
+                    PhoneNumber = userFromDb.PhoneNumber
+                }
+            };
+        }
+
         public async Task<List<Salon>> GetAllSalons()
         {
             var salonsListDb = await _context.Salons.ToListAsync();
