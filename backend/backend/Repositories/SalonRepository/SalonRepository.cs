@@ -37,6 +37,9 @@ namespace backend.Repositories.SalonRepository
                 SalonCity = newSalonDetails.SalonCity,
                 SalonAddress = newSalonDetails.SalonAddress,
                 UserId = newSalonDetails.UserId,
+                WorkDays = newSalonDetails.WorkDays,
+                WorkHoursInterval = newSalonDetails.WorkHoursInterval,
+                SalonReviews = newSalonDetails.SalonReviews
             };
 
             _context.Salons.Add(newSalon);
@@ -47,6 +50,9 @@ namespace backend.Repositories.SalonRepository
                 SalonName = newSalonDetails.SalonName,
                 SalonCity = newSalonDetails.SalonCity,
                 SalonAddress = newSalonDetails.SalonAddress,
+                WorkDays = newSalonDetails.WorkDays,
+                WorkHoursInterval = newSalonDetails.WorkHoursInterval,
+                SalonReviews = newSalonDetails.SalonReviews,
                 UserDetails = new UsersSalonsDetailsDto
                 {
                     UserName = userFromDb.UserName,
@@ -77,6 +83,9 @@ namespace backend.Repositories.SalonRepository
                     SalonName = u.SalonName,
                     SalonCity = u.SalonCity,
                     SalonAddress = u.SalonAddress,
+                    WorkDays = u.WorkDays,
+                    WorkHoursInterval = u.WorkHoursInterval,
+                    SalonReviews = u.SalonReviews,
                     UserDetails = new UsersSalonsDetailsDto
                     {
                         UserName = u.User.UserName,

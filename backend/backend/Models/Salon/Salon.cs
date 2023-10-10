@@ -12,5 +12,9 @@ namespace backend.Models.Salon
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
+        public string WorkDays { get; set; }
+        public string WorkHoursInterval { get; set; }
+        [Column(TypeName = "decimal(2, 1)")]
+        public decimal SalonReviews { get; set; }
     }
 }
