@@ -4,6 +4,7 @@ using backend.Repositories.AuthRepository;
 using backend.Services.TokenService;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace backend.Services.AuthService
 {
@@ -11,12 +12,16 @@ namespace backend.Services.AuthService
     {
         private readonly IAuthRepository _authRepository;
         private readonly ITokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(IAuthRepository authRepository, ITokenService tokenService)
+        public AuthService(IAuthRepository authRepository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             _authRepository = authRepository;
             _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccessor;
         }
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
 
         public async Task<User> Register(RegisterUserDto registerUserDto)
         {
@@ -47,6 +52,20 @@ namespace backend.Services.AuthService
             var userInfo = await _authRepository.Login(userCredentials);
 
             return _tokenService.GenerateToken(userInfo);
+        }
+
+        public async Task<string> ChangePassword(ChangePasswordDto changePassword)
+        {
+            if (changePassword.UserId <= 0)
+                throw new Exception("User not found");
+
+            if (changePassword.UserId != GetUserId())
+                throw new Exception("User not authorized");
+
+            if (changePassword.NewPassword != changePassword.ConfirmNewPassword)
+                throw new Exception("Passwords don't match");
+
+            return await _authRepository.ChangePassword(changePassword);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using backend.Dtos.Auth;
 using backend.Services.AuthService;
 using backend.Services.TokenService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -62,6 +63,23 @@ namespace backend.Controllers
             catch (Exception ex)
             {
                 return Json(Conflict(ex.Message));
+            }
+        }
+
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPut("change-password")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var response = await _authService.ChangePassword(changePasswordDto);
+                return Ok(Json(response));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(Json(ex.Message));
             }
         }
     }

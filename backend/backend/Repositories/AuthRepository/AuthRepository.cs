@@ -55,5 +55,25 @@ namespace backend.Repositories.AuthRepository
 
             return userFromDb;
         }
+
+        public async Task<string> ChangePassword(ChangePasswordDto changePassword)
+        {
+            var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == changePassword.UserId);
+
+            if (userFromDb is null)
+                throw new Exception("User not found");
+
+            var verifyPassword = BCrypt.Net.BCrypt.Verify(changePassword.OldPassword, userFromDb.Password);
+
+            if (!verifyPassword)
+                throw new Exception("Old password doesn't match.");
+
+            // Hash and Salt password
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(changePassword.NewPassword);
+            userFromDb.Password = hashedPassword;
+            await _dbContext.SaveChangesAsync();
+
+            return "Password was changed.";
+        }
     }
 }
