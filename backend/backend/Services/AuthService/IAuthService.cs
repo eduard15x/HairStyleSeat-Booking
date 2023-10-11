@@ -8,5 +8,6 @@ namespace backend.Services.AuthService
         Task<User> Register(RegisterUserDto registerUserDto);
         Task<UserTokenDto> Login(LoginUserDto userCredentials);
         Task<string> ChangePassword(ChangePasswordDto changePassword);
+        Task<UpdateUserDto> UpdateUser(UpdateUserDto updateUser);
     }
 }

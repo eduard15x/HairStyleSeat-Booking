@@ -82,5 +82,22 @@ namespace backend.Controllers
                 return Conflict(Json(ex.Message));
             }
         }
+
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPut("update-user")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
+        public async Task<ActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
+        {
+            try
+            {
+                var response = await _authService.UpdateUser(updateUserDto);
+                return Ok(Json(response));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(Json(ex.Message));
+            }
+        }
     }
 }

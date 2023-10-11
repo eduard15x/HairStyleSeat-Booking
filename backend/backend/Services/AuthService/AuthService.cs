@@ -67,5 +67,23 @@ namespace backend.Services.AuthService
 
             return await _authRepository.ChangePassword(changePassword);
         }
+
+        public async Task<UpdateUserDto> UpdateUser(UpdateUserDto updateUser)
+        {
+            var currentUser = GetUserId();
+
+            if (updateUser.Id != currentUser)
+                throw new Exception("User not authorized");
+
+            var updatedUser = await _authRepository.UpdateUser(updateUser);
+
+            return new UpdateUserDto() 
+            { 
+                Id = updatedUser.Id, 
+                UserName = updateUser.UserName,
+                City = updateUser.City,
+                PhoneNumber = updateUser.PhoneNumber,
+            };
+        }
     }
 }

@@ -75,5 +75,20 @@ namespace backend.Repositories.AuthRepository
 
             return "Password was changed.";
         }
+
+        public async Task<User> UpdateUser(UpdateUserDto updatedUser)
+        {
+            var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
+            if (userFromDb is null)
+                throw new Exception("User not found");
+
+            userFromDb.UserName = updatedUser.UserName;
+            userFromDb.City = updatedUser.City;
+            userFromDb.PhoneNumber = updatedUser.PhoneNumber;
+
+            await _dbContext.SaveChangesAsync();
+
+            return userFromDb;
+        }
     }
 }
