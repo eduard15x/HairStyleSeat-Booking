@@ -24,6 +24,12 @@ namespace backend.Repositories.SalonRepository
                 throw new Exception("You must be authenticate to become an affiliate.");
             }
 
+            var userHasSalon = await _context.Salons.AnyAsync(s => s.UserId == newSalonDetails.UserId);
+            if (userHasSalon)
+            {
+                throw new Exception("User already has a salon.");
+            }
+
             var salonAlreadyExists = await _context.Salons.AnyAsync(s => s.SalonName == newSalonDetails.SalonName);
 
             if (salonAlreadyExists)
