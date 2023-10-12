@@ -1,4 +1,5 @@
 ﻿using backend.Dtos.Salon;
+using backend.Dtos.SalonService;
 using backend.Services.SalonService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,5 +84,24 @@ namespace backend.Controllers
                 return Json(Conflict(ex));
             }
         }
+
+        #region SalonService
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPost("create-service-for-salon")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> CreateNewSalonService([FromBody] CreateSalonServiceDto createSalonServiceDto)
+        {
+            try
+            {
+                var response = await _salonService.CreateNewSalonService(createSalonServiceDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+        #endregion
     }
 }

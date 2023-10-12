@@ -1,4 +1,5 @@
 ﻿using backend.Dtos.Salon;
+using backend.Dtos.SalonService;
 
 namespace backend.Services.SalonService
 {
@@ -8,5 +9,6 @@ namespace backend.Services.SalonService
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updatedSalonDto);
         Task<dynamic> GetAllSalons();
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
+        Task<GetSalonServiceDto> CreateNewSalonService(CreateSalonServiceDto createSalonServiceDto);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using backend.Dtos.Salon;
+using backend.Dtos.SalonService;
 using backend.Models.Salon;
 using backend.Repositories.SalonRepository;
 using System.Security.Claims;
@@ -65,5 +66,23 @@ namespace backend.Services.SalonService
 
             return await _salonRepository.GetSingleSalonDetails(salonId);
         }
+
+        #region SalonService
+        public async Task<GetSalonServiceDto> CreateNewSalonService(CreateSalonServiceDto createSalonServiceDto)
+        {
+            var currentUserId = GetUserId();
+
+            if (createSalonServiceDto.UserId <= 0 || createSalonServiceDto.UserId != currentUserId)
+                throw new Exception("User not authorized.");
+
+            if (createSalonServiceDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            if (createSalonServiceDto.Price <= 0)
+                throw new Exception("Price must be greater than 0.");
+
+            return await _salonRepository.CreateNewSalonService(createSalonServiceDto);
+        }
+        #endregion
     }
 }

@@ -1,7 +1,9 @@
 ﻿using backend.Data;
 using backend.Dtos.Auth;
 using backend.Dtos.Salon;
+using backend.Dtos.SalonService;
 using backend.Models.Salon;
+using backend.Services.SalonService;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.SalonRepository
@@ -153,5 +155,37 @@ namespace backend.Repositories.SalonRepository
 
             return salonDetails;
         }
+
+        #region SalonService
+        public async Task<GetSalonServiceDto> CreateNewSalonService(CreateSalonServiceDto createSalonServiceDto)
+        {
+            var salonFromDb = await _context.Salons.FirstOrDefaultAsync(s => s.Id == createSalonServiceDto.SalonId);
+            if (salonFromDb is null)
+                throw new Exception("You can't create a service for a non-existing salon");
+
+            if (salonFromDb.UserId != createSalonServiceDto.UserId)
+                throw new Exception("You are not authorized to create this service.");
+
+            var salonService = await _context.SalonServices.FirstOrDefaultAsync(ss => ss.SalonId == createSalonServiceDto.SalonId);
+            if (salonService != null && salonService.ServiceName == createSalonServiceDto.ServiceName)
+                throw new Exception("A simillar service already exists.");
+
+            var newSalonService = new Models.Salon.SalonService()
+            {
+                SalonId = createSalonServiceDto.SalonId,
+                ServiceName = createSalonServiceDto.ServiceName,
+                Price = createSalonServiceDto.Price,
+            };
+
+            _context.SalonServices.Add(newSalonService);
+            await _context.SaveChangesAsync();
+
+            return new GetSalonServiceDto
+            {
+                ServiceName = createSalonServiceDto.ServiceName,
+                Price = createSalonServiceDto.Price,
+            };
+        }
+        #endregion
     }
 }
