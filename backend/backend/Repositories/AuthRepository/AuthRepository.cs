@@ -56,7 +56,7 @@ namespace backend.Repositories.AuthRepository
             return userFromDb;
         }
 
-        public async Task<string> ChangePassword(ChangePasswordDto changePassword)
+        public async Task<User> ChangePassword(ChangePasswordDto changePassword)
         {
             var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == changePassword.UserId);
 
@@ -73,7 +73,7 @@ namespace backend.Repositories.AuthRepository
             userFromDb.Password = hashedPassword;
             await _dbContext.SaveChangesAsync();
 
-            return "Password was changed.";
+            return userFromDb;
         }
 
         public async Task<User> UpdateUser(UpdateUserDto updatedUser)

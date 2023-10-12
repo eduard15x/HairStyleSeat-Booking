@@ -7,7 +7,7 @@ namespace backend.Repositories.AuthRepository
     {
         Task<User> Register(User newUser);
         Task<User> Login(LoginUserDto userCredentials);
-        Task<string> ChangePassword(ChangePasswordDto changePasswordDto);
+        Task<User> ChangePassword(ChangePasswordDto changePasswordDto);
         Task<User> UpdateUser(UpdateUserDto updatedUser);
     }
 }

@@ -51,7 +51,7 @@ namespace backend.Controllers
                 HttpContext.Response.Cookies.Append("token", userToken.Token,
                     new CookieOptions
                     {
-                        Expires = DateTime.Now.AddDays(7),
+                        Expires = DateTime.Now.AddMinutes(30),
                         HttpOnly = true,
                         Secure = true,
                         IsEssential = true,
@@ -74,8 +74,18 @@ namespace backend.Controllers
         {
             try
             {
-                var response = await _authService.ChangePassword(changePasswordDto);
-                return Ok(Json(response));
+                var userToken = await _authService.ChangePassword(changePasswordDto);
+                HttpContext.Response.Cookies.Append("token", userToken.Token,
+                    new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddMinutes(30),
+                        HttpOnly = true,
+                        Secure = true,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.None,
+                    });
+
+                return Ok(Json("Password succesfully changed."));
             }
             catch (Exception ex)
             {

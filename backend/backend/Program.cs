@@ -45,6 +45,9 @@ namespace backend
             }).AddCookie(option =>
             {
                 option.Cookie.Name = "token";
+                option.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set your desired session duration
+                option.SlidingExpiration = false; // Extend the session cookie expiration with activity
+
 
             }).AddJwtBearer(option =>
               {

@@ -54,7 +54,7 @@ namespace backend.Services.AuthService
             return _tokenService.GenerateToken(userInfo);
         }
 
-        public async Task<string> ChangePassword(ChangePasswordDto changePassword)
+        public async Task<UserTokenDto> ChangePassword(ChangePasswordDto changePassword)
         {
             if (changePassword.UserId <= 0)
                 throw new Exception("User not found");
@@ -65,7 +65,8 @@ namespace backend.Services.AuthService
             if (changePassword.NewPassword != changePassword.ConfirmNewPassword)
                 throw new Exception("Passwords don't match");
 
-            return await _authRepository.ChangePassword(changePassword);
+            var userInfo = await _authRepository.ChangePassword(changePassword);
+            return _tokenService.GenerateToken(userInfo);
         }
 
         public async Task<UpdateUserDto> UpdateUser(UpdateUserDto updateUser)
