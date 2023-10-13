@@ -19,6 +19,7 @@ namespace backend.Controllers
             _salonService = salonService;
         }
 
+        #region Salon
         [Authorize(Roles = "admin, customer, affiliate")]
         [HttpPost("create")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
@@ -84,6 +85,7 @@ namespace backend.Controllers
                 return Json(Conflict(ex));
             }
         }
+        #endregion
 
         #region SalonService
         [Authorize(Roles = "admin, customer, affiliate")]
@@ -100,6 +102,72 @@ namespace backend.Controllers
             catch (Exception ex)
             {
                 return Json(BadRequest(ex.Message));
+            }
+        }
+
+        [HttpPost("/{salonId}/services/{salonServiceName}")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> GetSingleSalonService([FromRoute] string salonServiceName, [FromRoute] int salonId)
+        {
+            try
+            {
+                var response = await _salonService.GetSingleSalonService(salonServiceName, salonId);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+
+        [HttpPost("{salonId}/services")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> GetAllSalonServices([FromRoute] int salonId)
+        {
+            try
+            {
+                var response = await _salonService.GetAllSalonServices(salonId);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPost("update-service")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
+        public async Task<ActionResult> UpdateSalonService(UpdateSalonServiceDto updateSalonServiceDto)
+        {
+            try
+            {
+                var response = await _salonService.UpdateSalonService(updateSalonServiceDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
+            }
+        }
+
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPost("delete-service")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
+        public async Task<ActionResult> DeleteSalonService(DeleteSalonServiceDto deleteSalonServiceDto)
+        {
+            try
+            {
+                var response = await _salonService.DeleteSalonService(deleteSalonServiceDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
             }
         }
         #endregion

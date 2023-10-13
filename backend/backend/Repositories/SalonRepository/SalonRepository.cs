@@ -10,13 +10,18 @@ namespace backend.Repositories.SalonRepository
 {
     public class SalonRepository : ISalonRepository
     {
+        #region Private Fields
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Public Constructor
         public SalonRepository(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Salon Methods
         public async Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails)
         {
             var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == newSalonDetails.UserId);
@@ -155,8 +160,9 @@ namespace backend.Repositories.SalonRepository
 
             return salonDetails;
         }
+        #endregion
 
-        #region SalonService
+        #region SalonService Methods
         public async Task<GetSalonServiceDto> CreateNewSalonService(CreateSalonServiceDto createSalonServiceDto)
         {
             var salonFromDb = await _context.Salons.FirstOrDefaultAsync(s => s.Id == createSalonServiceDto.SalonId);
@@ -166,8 +172,8 @@ namespace backend.Repositories.SalonRepository
             if (salonFromDb.UserId != createSalonServiceDto.UserId)
                 throw new Exception("You are not authorized to create this service.");
 
-            var salonService = await _context.SalonServices.FirstOrDefaultAsync(ss => ss.SalonId == createSalonServiceDto.SalonId);
-            if (salonService != null && salonService.ServiceName == createSalonServiceDto.ServiceName)
+            var salonService = await _context.SalonServices.AnyAsync(ss => ss.SalonId == createSalonServiceDto.SalonId && ss.ServiceName == createSalonServiceDto.ServiceName);
+            if (salonService)
                 throw new Exception("A simillar service already exists.");
 
             var newSalonService = new Models.Salon.SalonService()
@@ -186,6 +192,75 @@ namespace backend.Repositories.SalonRepository
                 Price = createSalonServiceDto.Price,
             };
         }
+
+        public async Task<GetSalonServiceDto> GetSingleSalonService(string salonServiceName, int salonId)
+        {
+            var salonServiceFromDbo = await _context.SalonServices.FirstOrDefaultAsync(ss => ss.SalonId == salonId && ss.ServiceName == salonServiceName);
+            if (salonServiceFromDbo is null)
+                throw new Exception($"Service with name '{salonServiceName}' doesn't exist");
+
+            return new GetSalonServiceDto
+            {
+                ServiceName = salonServiceFromDbo.ServiceName,
+                Price = salonServiceFromDbo.Price
+            };
+        }
+
+        public async Task<List<GetSalonServiceDto>> GetAllSalonServices(int salonId)
+        {
+            var salonServicesFromDb = await _context.SalonServices
+                .Where(ss => ss.SalonId == salonId)
+                .ToListAsync();
+
+            var salonServicesList = salonServicesFromDb.Select(ss => new GetSalonServiceDto
+            {
+                ServiceName = ss.ServiceName,
+                Price = ss.Price
+            }).ToList();
+
+            return salonServicesList;
+        }
+
+        public async Task<GetSalonServiceDto> UpdateSalonService(UpdateSalonServiceDto updateSalonServiceDto)
+        {
+            var salonServiceFromDb = await _context.SalonServices.FirstOrDefaultAsync(ss => ss.Id == updateSalonServiceDto.Id);
+            if (salonServiceFromDb is null)
+                throw new Exception("Salon service doesn't exist.");
+
+            var serviceNameExists = await _context.SalonServices
+                .AnyAsync(ss => ss.SalonId == updateSalonServiceDto.SalonId && ss.ServiceName == updateSalonServiceDto.ServiceName);
+            
+            if (!serviceNameExists)
+            {
+                salonServiceFromDb.ServiceName = updateSalonServiceDto.ServiceName;
+            }
+
+            salonServiceFromDb.Price = updateSalonServiceDto.Price;
+
+            _context.SalonServices.Update(salonServiceFromDb);
+            await _context.SaveChangesAsync();
+
+            return new GetSalonServiceDto
+            {
+                ServiceName = updateSalonServiceDto.ServiceName,
+                Price = updateSalonServiceDto.Price
+            };
+        }
+
+        public async Task<bool> DeleteSalonService(DeleteSalonServiceDto deleteSalonServiceDto)
+        {
+            var salonServiceFromDb = await _context.SalonServices.
+                FirstOrDefaultAsync(ss => ss.ServiceName == deleteSalonServiceDto.ServiceName && ss.SalonId == deleteSalonServiceDto.SalonId);
+
+            if (salonServiceFromDb is null)
+                return false;
+
+            _context.SalonServices.Remove(salonServiceFromDb);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         #endregion
     }
 }

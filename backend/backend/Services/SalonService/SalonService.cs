@@ -1,6 +1,5 @@
 ﻿using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
-using backend.Models.Salon;
 using backend.Repositories.SalonRepository;
 using System.Security.Claims;
 
@@ -8,16 +7,21 @@ namespace backend.Services.SalonService
 {
     public class SalonService : ISalonService
     {
+        #region Private Fields
         private readonly ISalonRepository _salonRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        #endregion
 
+        #region Public Constructor
         public SalonService(ISalonRepository salonRepository, IHttpContextAccessor httpContextAccessor)
         {
             _salonRepository = salonRepository;
             _httpContextAccessor = httpContextAccessor;
         }
-        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        #endregion
 
+        #region Salon
         public async Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails)
         {
             var currentUser = GetUserId();
@@ -66,6 +70,7 @@ namespace backend.Services.SalonService
 
             return await _salonRepository.GetSingleSalonDetails(salonId);
         }
+        #endregion
 
         #region SalonService
         public async Task<GetSalonServiceDto> CreateNewSalonService(CreateSalonServiceDto createSalonServiceDto)
@@ -82,6 +87,62 @@ namespace backend.Services.SalonService
                 throw new Exception("Price must be greater than 0.");
 
             return await _salonRepository.CreateNewSalonService(createSalonServiceDto);
+        }
+
+        public async Task<GetSalonServiceDto> GetSingleSalonService(string salonServiceName, int salonId)
+        {
+            if (salonId <= 0)
+                throw new Exception("Salon doesn't exists.");
+
+            if (string.IsNullOrEmpty(salonServiceName) || string.IsNullOrWhiteSpace(salonServiceName))
+                throw new Exception("Salon service name must have a value.");
+
+            return await _salonRepository.GetSingleSalonService(salonServiceName);
+        }
+
+        public async Task<List<GetSalonServiceDto>> GetAllSalonServices(int salonId)
+        {
+            if (salonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            return await _salonRepository.GetAllSalonServices(salonId);
+        }
+
+        public async Task<GetSalonServiceDto> UpdateSalonService(UpdateSalonServiceDto updateSalonServiceDto)
+        {
+            var currentUserId = GetUserId();
+
+            if (currentUserId != updateSalonServiceDto.UserId || updateSalonServiceDto.UserId <= 0)
+                throw new Exception("Not authorized");
+
+            if (updateSalonServiceDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            if (string.IsNullOrEmpty(updateSalonServiceDto.ServiceName))
+                throw new Exception("Service can not be null.");
+
+            return await _salonRepository.UpdateSalonService(updateSalonServiceDto);
+        }
+
+        public async Task<bool> DeleteSalonService(DeleteSalonServiceDto deleteSalonServiceDto)
+        {
+            var currentUserId = GetUserId();
+
+            if (currentUserId != deleteSalonServiceDto.UserId || deleteSalonServiceDto.UserId <= 0)
+                throw new Exception("Not authorized");
+
+            if (deleteSalonServiceDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            if (String.IsNullOrEmpty(deleteSalonServiceDto.ServiceName))
+                throw new Exception("Service must have an name.");
+
+            var response = await _salonRepository.DeleteSalonService(deleteSalonServiceDto);
+
+            if (!response)
+                throw new Exception("Salon doesn't exist or could not be deleted.");
+
+            return response;
         }
         #endregion
     }
