@@ -83,19 +83,18 @@ namespace backend.Repositories.SalonRepository
                 throw new Exception("You must be authenticated to be able to update salon's information.");
             }
 
-            var salonAlreadyExists = await _context.Salons.AnyAsync(s => s.SalonName == updateSalonDto.SalonName);
-            if (salonAlreadyExists)
-            {
-                throw new Exception("Salon with same name already exists.");
-            }
-
             var existingSalon = await _context.Salons.FirstOrDefaultAsync(s => s.Id == updateSalonDto.Id);
             if (existingSalon is null)
             {
                 throw new Exception("Salon was not found.");
             }
 
-            existingSalon.SalonName = updateSalonDto.SalonName;
+            var salonAlreadyExists = await _context.Salons.AnyAsync(s => s.SalonName == updateSalonDto.SalonName);
+            if (!salonAlreadyExists)
+            {
+                existingSalon.SalonName = updateSalonDto.SalonName;
+            }
+
             existingSalon.SalonAddress = updateSalonDto.SalonAddress;
             existingSalon.SalonCity = updateSalonDto.SalonAddress;
             existingSalon.WorkDays = updateSalonDto.SalonAddress;

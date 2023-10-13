@@ -105,7 +105,7 @@ namespace backend.Controllers
             }
         }
 
-        [HttpPost("/{salonId}/services/{salonServiceName}")]
+        [HttpGet("/{salonId}/services/{salonServiceName}")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> GetSingleSalonService([FromRoute] string salonServiceName, [FromRoute] int salonId)
@@ -121,7 +121,7 @@ namespace backend.Controllers
             }
         }
 
-        [HttpPost("{salonId}/services")]
+        [HttpGet("{salonId}/services")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> GetAllSalonServices([FromRoute] int salonId)
@@ -138,7 +138,7 @@ namespace backend.Controllers
         }
 
         [Authorize(Roles = "admin, customer, affiliate")]
-        [HttpPost("update-service")]
+        [HttpPut("update-service")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> UpdateSalonService(UpdateSalonServiceDto updateSalonServiceDto)
@@ -155,7 +155,7 @@ namespace backend.Controllers
         }
 
         [Authorize(Roles = "admin, customer, affiliate")]
-        [HttpPost("delete-service")]
+        [HttpDelete("delete-service")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> DeleteSalonService(DeleteSalonServiceDto deleteSalonServiceDto)

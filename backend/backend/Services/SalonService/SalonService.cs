@@ -97,7 +97,7 @@ namespace backend.Services.SalonService
             if (string.IsNullOrEmpty(salonServiceName) || string.IsNullOrWhiteSpace(salonServiceName))
                 throw new Exception("Salon service name must have a value.");
 
-            return await _salonRepository.GetSingleSalonService(salonServiceName);
+            return await _salonRepository.GetSingleSalonService(salonServiceName, salonId);
         }
 
         public async Task<List<GetSalonServiceDto>> GetAllSalonServices(int salonId)
@@ -120,6 +120,9 @@ namespace backend.Services.SalonService
 
             if (string.IsNullOrEmpty(updateSalonServiceDto.ServiceName))
                 throw new Exception("Service can not be null.");
+
+            if (updateSalonServiceDto.Price <= 0)
+                throw new Exception("Price must be greater than 0.");
 
             return await _salonRepository.UpdateSalonService(updateSalonServiceDto);
         }
