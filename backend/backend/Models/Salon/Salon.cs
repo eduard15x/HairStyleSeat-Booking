@@ -16,5 +16,7 @@ namespace backend.Models.Salon
         public string WorkHoursInterval { get; set; }
         [Column(TypeName = "decimal(2, 1)")]
         public decimal SalonReviews { get; set; }
+        public int SalonStatus { get; set; } = 2;
+        // if i call this prop above with and ID at the end or make a new foreign key, cant migrate
     }
 }
