@@ -2,13 +2,13 @@
 using backend.Dtos.Auth;
 using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
+using backend.Helpers;
 using backend.Models.Salon;
-using backend.Services.SalonService;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.SalonRepository
 {
-    public class SalonRepository : ISalonRepository
+    public class SalonRepository : HelperInputValidationRegex, ISalonRepository
     {
         #region Private Fields
         private readonly ApplicationDbContext _context;
@@ -169,9 +169,9 @@ namespace backend.Repositories.SalonRepository
 
             string[] workDaysArray = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", };
             var workDaysLower = workDaysDto.WorkDays.ToLower();
-            var stringContainsWorkDay = workDaysArray.Any(item => workDaysLower.Contains(item));
+            var stringIsValid = CheckWorkDaysInput(workDaysLower);
 
-            if (stringContainsWorkDay)
+            if (stringIsValid)
             {
                 salonFromDb.WorkDays = workDaysLower;
                 _context.Salons.Update(salonFromDb);
@@ -180,7 +180,7 @@ namespace backend.Repositories.SalonRepository
                 return "Work days updated successfully";
             }
 
-            return "Work days of salon not updated because there is no valid work day set.";
+            return "Work days of salon not updated because the pattern is not respected.";
         }
         #endregion
 
