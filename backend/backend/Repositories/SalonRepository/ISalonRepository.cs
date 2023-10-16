@@ -11,6 +11,7 @@ namespace backend.Repositories.SalonRepository
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updateSalonDto);
         Task<List<Salon>> GetAllSalons();
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
+        Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         #endregion
 
         #region SalonService

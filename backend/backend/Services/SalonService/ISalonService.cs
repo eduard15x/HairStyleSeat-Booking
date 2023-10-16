@@ -10,6 +10,7 @@ namespace backend.Services.SalonService
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updatedSalonDto);
         Task<dynamic> GetAllSalons();
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
+        Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         #endregion
 
         #region SalonService

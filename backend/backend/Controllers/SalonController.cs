@@ -85,6 +85,23 @@ namespace backend.Controllers
                 return Json(Conflict(ex));
             }
         }
+
+        [Authorize(Roles = "admin, customer, affiliate")]
+        [HttpPut("set-work-days")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.NotModified)]
+        public async Task<ActionResult> SetWorkDays([FromBody] SetWorkDaysDto workDaysDto)
+        {
+            try
+            {
+                var response = await _salonService.SetWorkDays(workDaysDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
+            }
+        }
         #endregion
 
         #region SalonService

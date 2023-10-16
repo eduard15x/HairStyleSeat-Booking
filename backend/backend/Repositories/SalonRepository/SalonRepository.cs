@@ -159,6 +159,29 @@ namespace backend.Repositories.SalonRepository
 
             return salonDetails;
         }
+
+        public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)
+        {
+            var salonFromDb = await _context.Salons.FirstOrDefaultAsync(s =>  s.Id == workDaysDto.SalonId && s.UserId == workDaysDto.UserId);
+
+            if (salonFromDb is null)
+                throw new Exception("Salon doesn't exist or you are not authorized to make this change.");
+
+            string[] workDaysArray = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", };
+            var workDaysLower = workDaysDto.WorkDays.ToLower();
+            var stringContainsWorkDay = workDaysArray.Any(item => workDaysLower.Contains(item));
+
+            if (stringContainsWorkDay)
+            {
+                salonFromDb.WorkDays = workDaysLower;
+                _context.Salons.Update(salonFromDb);
+                await _context.SaveChangesAsync();
+
+                return "Work days updated successfully";
+            }
+
+            return "Work days of salon not updated because there is no valid work day set.";
+        }
         #endregion
 
         #region SalonService Methods
@@ -259,6 +282,7 @@ namespace backend.Repositories.SalonRepository
 
             return true;
         }
+
 
         #endregion
     }

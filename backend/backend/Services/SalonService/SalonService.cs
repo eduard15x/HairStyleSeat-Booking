@@ -70,6 +70,22 @@ namespace backend.Services.SalonService
 
             return await _salonRepository.GetSingleSalonDetails(salonId);
         }
+
+        public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)
+        {
+            var currentUserID = GetUserId();
+
+            if (workDaysDto.UserId <= 0 || workDaysDto.UserId != currentUserID)
+                throw new Exception("Not authorized.");
+
+            if (workDaysDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            if (string.IsNullOrEmpty(workDaysDto.WorkDays) || string.IsNullOrWhiteSpace(workDaysDto.WorkDays))
+                return "You can not set an empty field for the work days of salon";
+
+            return await _salonRepository.SetWorkDays(workDaysDto);
+        }
         #endregion
 
         #region SalonService
@@ -147,6 +163,7 @@ namespace backend.Services.SalonService
 
             return response;
         }
+
         #endregion
     }
 }
