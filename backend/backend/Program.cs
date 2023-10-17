@@ -3,6 +3,7 @@ using backend.Data;
 using backend.Repositories.AuthRepository;
 using backend.Repositories.SalonRepository;
 using backend.Services.AuthService;
+using backend.Services.ReservationService;
 using backend.Services.SalonService;
 using backend.Services.TokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,6 +38,7 @@ namespace backend
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ISalonService, SalonService>();
             builder.Services.AddScoped<ISalonRepository, SalonRepository>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
             builder.Services.AddAuthentication(x =>
             {
