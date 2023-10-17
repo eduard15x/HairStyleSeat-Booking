@@ -231,6 +231,7 @@ namespace backend.Repositories.SalonRepository
                 SalonId = createSalonServiceDto.SalonId,
                 ServiceName = createSalonServiceDto.ServiceName,
                 Price = createSalonServiceDto.Price,
+                HaircutDurationTime = createSalonServiceDto.HaircutDurationTime
             };
 
             _context.SalonServices.Add(newSalonService);
@@ -240,6 +241,7 @@ namespace backend.Repositories.SalonRepository
             {
                 ServiceName = createSalonServiceDto.ServiceName,
                 Price = createSalonServiceDto.Price,
+                HaircutDurationTime = createSalonServiceDto.HaircutDurationTime
             };
         }
 
@@ -252,7 +254,8 @@ namespace backend.Repositories.SalonRepository
             return new GetSalonServiceDto
             {
                 ServiceName = salonServiceFromDbo.ServiceName,
-                Price = salonServiceFromDbo.Price
+                Price = salonServiceFromDbo.Price,
+                HaircutDurationTime = Convert.ToString((Convert.ToInt32(salonServiceFromDbo.HaircutDurationTime)) / 60) + " minutes"
             };
         }
 
@@ -265,7 +268,8 @@ namespace backend.Repositories.SalonRepository
             var salonServicesList = salonServicesFromDb.Select(ss => new GetSalonServiceDto
             {
                 ServiceName = ss.ServiceName,
-                Price = ss.Price
+                Price = ss.Price,
+                HaircutDurationTime = Convert.ToString((Convert.ToInt32(ss.HaircutDurationTime)) / 60) + " minutes"
             }).ToList();
 
             return salonServicesList;
@@ -293,7 +297,8 @@ namespace backend.Repositories.SalonRepository
             return new GetSalonServiceDto
             {
                 ServiceName = updateSalonServiceDto.ServiceName,
-                Price = updateSalonServiceDto.Price
+                Price = updateSalonServiceDto.Price,
+                HaircutDurationTime = Convert.ToString((Convert.ToInt32(updateSalonServiceDto.HaircutDurationTime)) / 60) + " minutes"
             };
         }
 

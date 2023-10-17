@@ -151,6 +151,13 @@ namespace backend.Services.SalonService
             if (createSalonServiceDto.Price <= 0)
                 throw new Exception("Price must be greater than 0.");
 
+            var isHourValid = 
+                createSalonServiceDto.HaircutDurationTime == "1800" || 
+                createSalonServiceDto.HaircutDurationTime == "2700" ||
+                createSalonServiceDto.HaircutDurationTime == "3600";
+            if (!isHourValid)
+                throw new Exception("Duration time format is not ok. Please select one of the following option: '1800' | '2700' | '3600'.");
+
             return await _salonRepository.CreateNewSalonService(createSalonServiceDto);
         }
 
@@ -189,6 +196,13 @@ namespace backend.Services.SalonService
             if (updateSalonServiceDto.Price <= 0)
                 throw new Exception("Price must be greater than 0.");
 
+            var isHourValid =
+                updateSalonServiceDto.HaircutDurationTime == "1800" ||
+                updateSalonServiceDto.HaircutDurationTime == "2700" ||
+                updateSalonServiceDto.HaircutDurationTime == "3600";
+            if (!isHourValid)
+                throw new Exception("Duration time format is not ok. Please select one of the following option: '1800' | '2700' | '3600'.");
+
             return await _salonRepository.UpdateSalonService(updateSalonServiceDto);
         }
 
@@ -212,7 +226,6 @@ namespace backend.Services.SalonService
 
             return response;
         }
-
 
         #endregion
     }
