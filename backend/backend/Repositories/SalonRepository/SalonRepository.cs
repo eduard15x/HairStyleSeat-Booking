@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.SalonRepository
 {
-    public class SalonRepository : HelperInputValidationRegex, ISalonRepository
+    public class SalonRepository : ISalonRepository
     {
         #region Private Fields
         private readonly ApplicationDbContext _context;
@@ -164,7 +164,7 @@ namespace backend.Repositories.SalonRepository
 
             string[] workDaysArray = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", };
             var workDaysLower = workDaysDto.WorkDays.ToLower();
-            var stringIsValid = CheckWorkDaysInput(workDaysLower);
+            var stringIsValid = HelperInputValidationRegex.CheckWorkDaysInput(workDaysLower);
 
             if (stringIsValid)
             {

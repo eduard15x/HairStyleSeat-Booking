@@ -4,7 +4,7 @@ namespace backend.Helpers
 {
     public class HelperTimeValidation
     {
-        protected bool CheckHourWithinInterval(string selectedHour, string startTime, string endTime)
+        public static bool CheckHourWithinInterval(string selectedHour, string startTime, string endTime)
         {
             DateTime userTime = DateTime.ParseExact(selectedHour, "HH:mm", CultureInfo.InvariantCulture);
             DateTime startTimeObj = DateTime.ParseExact(startTime, "HH:mm", CultureInfo.InvariantCulture);
