@@ -182,6 +182,29 @@ namespace backend.Repositories.SalonRepository
 
             return "Work days of salon not updated because the pattern is not respected.";
         }
+
+        public async Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto)
+        {
+            var salonStatusCodeExists = await _context.SalonStatuses
+                .AnyAsync(ss => ss.Id == modifySalonStatusDto.SalonStatusId);
+            if (!salonStatusCodeExists)
+                throw new Exception("Salon status code doesn't exist.");
+
+            var salonFromDb = await _context.Salons
+                .FirstOrDefaultAsync(s => s.Id == modifySalonStatusDto.SalonId && s.UserId == modifySalonStatusDto.SalonUserId);
+            if (salonFromDb is null)
+                throw new Exception("The salon doesn't exist or it doesn't belong to the current user.");
+
+            if (salonFromDb.SalonStatus == modifySalonStatusDto.SalonStatusId)
+                return false;
+
+            salonFromDb.SalonStatus = modifySalonStatusDto.SalonStatusId;
+            _context.Salons.Update(salonFromDb);
+            await _context.SaveChangesAsync();
+            
+            return true;
+        }
+
         #endregion
 
         #region SalonService Methods
@@ -282,7 +305,6 @@ namespace backend.Repositories.SalonRepository
 
             return true;
         }
-
 
         #endregion
     }

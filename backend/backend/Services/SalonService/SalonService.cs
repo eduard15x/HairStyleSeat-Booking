@@ -86,6 +86,31 @@ namespace backend.Services.SalonService
 
             return await _salonRepository.SetWorkDays(workDaysDto);
         }
+
+        public async Task<string> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto)
+        {
+            var currentUserID = GetUserId();
+
+            if (modifySalonStatusDto.EmployeeId <= 0 || modifySalonStatusDto.EmployeeId != currentUserID)
+                throw new Exception("Not authorized.");
+
+            if (modifySalonStatusDto.SalonUserId <= 0)
+                throw new Exception($"User with id {modifySalonStatusDto.SalonUserId} doesn't exist or doesn't have a salon.");
+
+            if (modifySalonStatusDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            // TODO - maybe we can use another approach to check this (enum?, db table?)
+            if (modifySalonStatusDto.SalonStatusId <= 0 || modifySalonStatusDto.SalonStatusId > 4)
+                throw new Exception("Salon status id is incorrect");
+
+            var result = await _salonRepository.ModifySalonStatus(modifySalonStatusDto);
+
+            if (!result)
+                return "Salon status couldn't be modified.";
+
+            return "Salon status was modified.";
+        }
         #endregion
 
         #region SalonService
@@ -163,6 +188,7 @@ namespace backend.Services.SalonService
 
             return response;
         }
+
 
         #endregion
     }

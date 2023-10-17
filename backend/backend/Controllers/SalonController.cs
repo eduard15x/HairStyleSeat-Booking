@@ -102,6 +102,24 @@ namespace backend.Controllers
                 return Json(Conflict(ex.Message));
             }
         }
+
+
+        [Authorize(Roles = "admin, employee")]
+        [HttpPut("modify-salon-status")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.NotModified)]
+        public async Task<ActionResult> ModifySalonStatus([FromBody] ModifySalonStatusDto modifySalonStatusDto)
+        {
+            try
+            {
+                var response = await _salonService.ModifySalonStatus(modifySalonStatusDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
+            }
+        }
         #endregion
 
         #region SalonService

@@ -1,6 +1,4 @@
 ﻿using backend.Dtos.Auth;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace backend.Dtos.Salon
 {
@@ -13,5 +11,6 @@ namespace backend.Dtos.Salon
         public string WorkDays { get; set; }
         public string WorkHoursInterval { get; set; }
         public decimal SalonReviews { get; set; }
+        public int SalonStatus { get; set; }
     }
 }
