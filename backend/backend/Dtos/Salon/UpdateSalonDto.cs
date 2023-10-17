@@ -15,6 +15,7 @@ namespace backend.Dtos.Salon
         [Required]
         public int UserId { get; set; }
         public string WorkDays { get; set; } = string.Empty;
-        public string WorkHoursInterval { get; set; } = string.Empty;
+        public string StartTimeHour { get; set; } = string.Empty;
+        public string EndTimeHour { get; set; } = string.Empty;
     }
 }

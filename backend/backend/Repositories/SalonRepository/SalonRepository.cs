@@ -51,7 +51,6 @@ namespace backend.Repositories.SalonRepository
                 SalonAddress = newSalonDetails.SalonAddress,
                 UserId = newSalonDetails.UserId,
                 WorkDays = newSalonDetails.WorkDays,
-                WorkHoursInterval = newSalonDetails.WorkHoursInterval,
                 SalonReviews = newSalonDetails.SalonReviews
             };
 
@@ -64,7 +63,6 @@ namespace backend.Repositories.SalonRepository
                 SalonCity = newSalonDetails.SalonCity,
                 SalonAddress = newSalonDetails.SalonAddress,
                 WorkDays = newSalonDetails.WorkDays,
-                WorkHoursInterval = newSalonDetails.WorkHoursInterval,
                 SalonReviews = newSalonDetails.SalonReviews,
                 UserDetails = new UsersSalonsDetailsDto
                 {
@@ -98,7 +96,6 @@ namespace backend.Repositories.SalonRepository
             existingSalon.SalonAddress = updateSalonDto.SalonAddress;
             existingSalon.SalonCity = updateSalonDto.SalonAddress;
             existingSalon.WorkDays = updateSalonDto.SalonAddress;
-            existingSalon.WorkHoursInterval = updateSalonDto.SalonAddress;
 
             await _context.SaveChangesAsync();
 
@@ -108,7 +105,6 @@ namespace backend.Repositories.SalonRepository
                 SalonCity = existingSalon.SalonCity,
                 SalonAddress = existingSalon.SalonAddress,
                 WorkDays = existingSalon.WorkDays,
-                WorkHoursInterval = existingSalon.WorkHoursInterval,
                 SalonReviews = existingSalon.SalonReviews,
                 UserDetails = new UsersSalonsDetailsDto
                 {
@@ -141,7 +137,6 @@ namespace backend.Repositories.SalonRepository
                     SalonCity = u.SalonCity,
                     SalonAddress = u.SalonAddress,
                     WorkDays = u.WorkDays,
-                    WorkHoursInterval = u.WorkHoursInterval,
                     SalonReviews = u.SalonReviews,
                     UserDetails = new UsersSalonsDetailsDto
                     {

@@ -10,5 +10,6 @@ namespace backend.Models.Salon
         public Salon Salon { get; set; }
         public string ServiceName { get; set; }
         public double Price { get; set; }
+        public string HaircutDurationTime { get; set; }
     }
 }

@@ -50,7 +50,6 @@ namespace backend.Services.SalonService
                 SalonCity = updatedSalonDto.SalonCity,
                 UserId = updatedSalonDto.UserId,
                 WorkDays = updatedSalonDto.WorkDays,
-                WorkHoursInterval = updatedSalonDto.WorkHoursInterval,
             };
 
             return await _salonRepository.UpdateSalon(updatedSalon);

@@ -13,7 +13,8 @@ namespace backend.Models.Salon
         [ForeignKey("UserId")]
         public User User { get; set; }
         public string WorkDays { get; set; }
-        public string WorkHoursInterval { get; set; }
+        public string StartTimeHour { get; set; }
+        public string EndTimeHour { get; set; }
         [Column(TypeName = "decimal(2, 1)")]
         public decimal SalonReviews { get; set; }
         public int SalonStatus { get; set; } = 2;

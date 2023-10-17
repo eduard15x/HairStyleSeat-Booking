@@ -14,5 +14,6 @@ namespace backend.Dtos.SalonService
         public string ServiceName { get; set; }
         [Required]
         public double Price { get; set; }
+        public string HaircutDurationTime { get; set; }
     }
 }
