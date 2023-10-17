@@ -4,8 +4,27 @@ namespace backend.Helpers
 {
     public class HelperTimeValidation
     {
+        public static bool CheckHourInterval(string startTime, string endTime)
+        {
+            if (string.IsNullOrEmpty(startTime) || string.IsNullOrEmpty(endTime))
+                return false;
+
+            DateTime startTimeObj = DateTime.ParseExact(startTime, "HH:mm", CultureInfo.InvariantCulture);
+            DateTime endTimeObj = DateTime.ParseExact(endTime, "HH:mm", CultureInfo.InvariantCulture);
+
+            if (startTimeObj.TimeOfDay > endTimeObj.TimeOfDay)
+                return false;
+
+            return true;
+        }
+
         public static bool CheckHourWithinInterval(string selectedHour, string startTime, string endTime)
         {
+            if (string.IsNullOrEmpty(selectedHour) || string.IsNullOrEmpty(startTime) || string.IsNullOrEmpty(endTime))
+            {
+                return false;
+            }
+
             DateTime userTime = DateTime.ParseExact(selectedHour, "HH:mm", CultureInfo.InvariantCulture);
             DateTime startTimeObj = DateTime.ParseExact(startTime, "HH:mm", CultureInfo.InvariantCulture);
             DateTime endTimeObj = DateTime.ParseExact(endTime, "HH:mm", CultureInfo.InvariantCulture);

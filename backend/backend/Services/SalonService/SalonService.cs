@@ -1,5 +1,6 @@
 ﻿using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
+using backend.Helpers;
 using backend.Repositories.SalonRepository;
 using System.Security.Claims;
 
@@ -30,6 +31,18 @@ namespace backend.Services.SalonService
                 throw new Exception("Not authorized!");
             }
 
+            // repeated function
+            var startTimeValid = HelperInputValidationRegex.CheckValidTimeFormat(newSalonDetails.StartTimeHour);
+            var endTimeValid = HelperInputValidationRegex.CheckValidTimeFormat(newSalonDetails.EndTimeHour);
+
+            if (!startTimeValid)
+                throw new Exception("Start time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
+            if (!endTimeValid)
+                throw new Exception("End time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
+
+            if (!HelperTimeValidation.CheckHourInterval(newSalonDetails.StartTimeHour, newSalonDetails.EndTimeHour))
+                throw new Exception("Start time hour can not be higher than end time hour.");
+
             return await _salonRepository.CreateNewSalon(newSalonDetails);
         }
 
@@ -38,9 +51,19 @@ namespace backend.Services.SalonService
             var currentUser = GetUserId();
 
             if (updatedSalonDto.UserId != currentUser || currentUser == 0)
-            {
                 throw new Exception("Not authorized!");
-            }
+
+            // repeated function
+            var startTimeValid = HelperInputValidationRegex.CheckValidTimeFormat(updatedSalonDto.StartTimeHour);
+            var endTimeValid = HelperInputValidationRegex.CheckValidTimeFormat(updatedSalonDto.EndTimeHour);
+
+            if (!startTimeValid)
+                throw new Exception("Start time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
+            if (!endTimeValid)
+                throw new Exception("End time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
+
+            if (!HelperTimeValidation.CheckHourInterval(updatedSalonDto.StartTimeHour, updatedSalonDto.EndTimeHour))
+                throw new Exception("Start time hour can not be higher than end time hour.");
 
             var updatedSalon = new UpdateSalonDto()
             {
@@ -50,6 +73,8 @@ namespace backend.Services.SalonService
                 SalonCity = updatedSalonDto.SalonCity,
                 UserId = updatedSalonDto.UserId,
                 WorkDays = updatedSalonDto.WorkDays,
+                StartTimeHour = updatedSalonDto.StartTimeHour,
+                EndTimeHour = updatedSalonDto.EndTimeHour,
             };
 
             return await _salonRepository.UpdateSalon(updatedSalon);

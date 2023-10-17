@@ -9,8 +9,8 @@ namespace backend.Dtos.Salon
         public string SalonAddress { get; set; }
         public UsersSalonsDetailsDto UserDetails { get; set; }
         public string WorkDays { get; set; }
-        public string StartTimeHour { get; set; } = string.Empty;
-        public string EndTimeHour { get; set; } = string.Empty;
+        public string StartTimeHour { get; set; }
+        public string EndTimeHour { get; set; }
         public decimal SalonReviews { get; set; }
         public int SalonStatus { get; set; }
     }

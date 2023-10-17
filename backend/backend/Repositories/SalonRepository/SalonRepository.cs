@@ -51,7 +51,9 @@ namespace backend.Repositories.SalonRepository
                 SalonAddress = newSalonDetails.SalonAddress,
                 UserId = newSalonDetails.UserId,
                 WorkDays = newSalonDetails.WorkDays,
-                SalonReviews = newSalonDetails.SalonReviews
+                SalonReviews = newSalonDetails.SalonReviews,
+                StartTimeHour = newSalonDetails.StartTimeHour,
+                EndTimeHour = newSalonDetails.EndTimeHour
             };
 
             _context.Salons.Add(newSalon);
@@ -69,7 +71,9 @@ namespace backend.Repositories.SalonRepository
                     UserName = userFromDb.UserName,
                     Email = userFromDb.Email,
                     PhoneNumber = userFromDb.PhoneNumber
-                }
+                },
+                StartTimeHour = newSalonDetails.StartTimeHour,
+                EndTimeHour = newSalonDetails.EndTimeHour
             };
         }
 
@@ -96,6 +100,8 @@ namespace backend.Repositories.SalonRepository
             existingSalon.SalonAddress = updateSalonDto.SalonAddress;
             existingSalon.SalonCity = updateSalonDto.SalonAddress;
             existingSalon.WorkDays = updateSalonDto.SalonAddress;
+            existingSalon.StartTimeHour = updateSalonDto.StartTimeHour;
+            existingSalon.EndTimeHour = updateSalonDto.EndTimeHour;
 
             await _context.SaveChangesAsync();
 
@@ -111,7 +117,9 @@ namespace backend.Repositories.SalonRepository
                     UserName = userFromDb.UserName,
                     Email = userFromDb.Email,
                     PhoneNumber = userFromDb.PhoneNumber
-                }
+                },
+                StartTimeHour = existingSalon.StartTimeHour,
+                EndTimeHour = existingSalon.EndTimeHour,
             };
         }
 
@@ -143,7 +151,9 @@ namespace backend.Repositories.SalonRepository
                         UserName = u.User.UserName,
                         Email = u.User.Email,
                         PhoneNumber = u.User.PhoneNumber
-                    }
+                    },
+                    StartTimeHour = u.StartTimeHour,
+                    EndTimeHour = u.EndTimeHour
                 })
                 .FirstOrDefaultAsync();
 
