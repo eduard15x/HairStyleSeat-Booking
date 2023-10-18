@@ -20,4 +20,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="Models\Auth\" />
+    <Folder Include="Models\Reservation\" />
+    <Folder Include="Models\Salon\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
-using backend.Models.Salon;
+using backend.Models;
 
 namespace backend.Repositories.SalonRepository
 {

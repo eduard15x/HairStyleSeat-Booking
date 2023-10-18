@@ -1,5 +1,5 @@
 ﻿using backend.Dtos.Auth;
-using backend.Models.Auth;
+using backend.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

@@ -1,5 +1,5 @@
 ﻿using backend.Dtos.Auth;
-using backend.Models.Auth;
+using backend.Models;
 
 namespace backend.Repositories.AuthRepository
 {

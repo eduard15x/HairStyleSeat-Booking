@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend.Models.Auth
+namespace backend.Models
 {
     public class User
     {

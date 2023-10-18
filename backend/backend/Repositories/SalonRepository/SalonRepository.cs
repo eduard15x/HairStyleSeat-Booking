@@ -3,7 +3,7 @@ using backend.Dtos.Auth;
 using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
 using backend.Helpers;
-using backend.Models.Salon;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.SalonRepository
@@ -200,10 +200,10 @@ namespace backend.Repositories.SalonRepository
             if (salonFromDb is null)
                 throw new Exception("The salon doesn't exist or it doesn't belong to the current user.");
 
-            if (salonFromDb.SalonStatus == modifySalonStatusDto.SalonStatusId)
+            if (salonFromDb.SalonStatusId == modifySalonStatusDto.SalonStatusId)
                 return false;
 
-            salonFromDb.SalonStatus = modifySalonStatusDto.SalonStatusId;
+            salonFromDb.SalonStatusId = modifySalonStatusDto.SalonStatusId;
             _context.Salons.Update(salonFromDb);
             await _context.SaveChangesAsync();
             
@@ -226,7 +226,7 @@ namespace backend.Repositories.SalonRepository
             if (salonService)
                 throw new Exception("A simillar service already exists.");
 
-            var newSalonService = new Models.Salon.SalonService()
+            var newSalonService = new SalonService()
             {
                 SalonId = createSalonServiceDto.SalonId,
                 ServiceName = createSalonServiceDto.ServiceName,

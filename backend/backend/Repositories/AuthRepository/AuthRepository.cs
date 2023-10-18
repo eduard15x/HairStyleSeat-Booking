@@ -1,6 +1,6 @@
 ﻿using backend.Data;
 using backend.Dtos.Auth;
-using backend.Models.Auth;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.AuthRepository

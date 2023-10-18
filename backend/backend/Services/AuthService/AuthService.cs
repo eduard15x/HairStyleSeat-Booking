@@ -1,5 +1,5 @@
 ﻿using backend.Dtos.Auth;
-using backend.Models.Auth;
+using backend.Models;
 using backend.Repositories.AuthRepository;
 using backend.Services.TokenService;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;

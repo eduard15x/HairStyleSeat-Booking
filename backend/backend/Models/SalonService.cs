@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Models.Salon
+namespace backend.Models
 {
     public class SalonService
     {

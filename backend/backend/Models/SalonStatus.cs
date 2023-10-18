@@ -1,4 +1,4 @@
-﻿namespace backend.Models.Salon
+﻿namespace backend.Models
 {
     public class SalonStatus
     {
