@@ -9,7 +9,6 @@ namespace backend.Models
         public string SalonCity { get; set; }
         public string SalonAddress { get; set; }
         public int UserId { get; set; }
-        [ForeignKey("UserId")]
         public User User { get; set; }
         public string WorkDays { get; set; }
         public string StartTimeHour { get; set; }
@@ -17,8 +16,10 @@ namespace backend.Models
         [Column(TypeName = "decimal(2, 1)")]
         public decimal SalonReviews { get; set; } = 0;
         public int StatusId { get; set; } = 2;
-        [ForeignKey("StatusId")]
         public Status Status { get; set; }
+        public List<Service> Services { get; set; }
+        public List<Reservation> Reservations { get; set; }
+
     }
 }
 
