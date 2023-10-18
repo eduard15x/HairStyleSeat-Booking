@@ -15,10 +15,10 @@ namespace backend.Models
         public string StartTimeHour { get; set; }
         public string EndTimeHour { get; set; }
         [Column(TypeName = "decimal(2, 1)")]
-        public decimal SalonReviews { get; set; }
-        public int SalonStatusId { get; set; }
-        [ForeignKey("SalonStatusId")]
-        public SalonStatus Status { get; set; }
+        public decimal SalonReviews { get; set; } = 0;
+        public int StatusId { get; set; } = 2;
+        [ForeignKey("StatusId")]
+        public Status Status { get; set; }
     }
 }
 

@@ -200,10 +200,10 @@ namespace backend.Repositories.SalonRepository
             if (salonFromDb is null)
                 throw new Exception("The salon doesn't exist or it doesn't belong to the current user.");
 
-            if (salonFromDb.SalonStatusId == modifySalonStatusDto.SalonStatusId)
+            if (salonFromDb.StatusId == modifySalonStatusDto.SalonStatusId)
                 return false;
 
-            salonFromDb.SalonStatusId = modifySalonStatusDto.SalonStatusId;
+            salonFromDb.StatusId = modifySalonStatusDto.SalonStatusId;
             _context.Salons.Update(salonFromDb);
             await _context.SaveChangesAsync();
             
@@ -226,7 +226,7 @@ namespace backend.Repositories.SalonRepository
             if (salonService)
                 throw new Exception("A simillar service already exists.");
 
-            var newSalonService = new SalonService()
+            var newSalonService = new Service()
             {
                 SalonId = createSalonServiceDto.SalonId,
                 ServiceName = createSalonServiceDto.ServiceName,

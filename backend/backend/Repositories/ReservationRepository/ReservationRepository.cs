@@ -1,6 +1,6 @@
 ﻿using backend.Data;
 using backend.Dtos.Reservation;
-using backend.Models.Reservation;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.ReservationRepository
@@ -21,7 +21,7 @@ namespace backend.Repositories.ReservationRepository
             if (salonFromDb is null)
                 throw new Exception("Salon doesn't exist.");
 
-            if (salonFromDb.SalonStatus == 2 || salonFromDb.SalonStatus == 3)
+            if (salonFromDb.StatusId == 2 || salonFromDb.StatusId == 3)
                 throw new Exception("Salon status is not OK.");
 
             var salonServiceFromDb = await _applicationDbContext.SalonServices.FirstOrDefaultAsync(ss => ss.Id == createReservationDto.SalonServiceId);
@@ -33,7 +33,7 @@ namespace backend.Repositories.ReservationRepository
             {
                 UserId = createReservationDto.UserId,
                 SalonId = createReservationDto.SalonId,
-                SalonServiceId = createReservationDto.SalonServiceId,
+                ServiceId = createReservationDto.SalonServiceId,
                 ServiceName = salonServiceFromDb.ServiceName,
                 Price = salonServiceFromDb.Price,
                 HaircutDurationTime = salonServiceFromDb.HaircutDurationTime,
@@ -61,7 +61,33 @@ namespace backend.Repositories.ReservationRepository
 
         public async Task<List<GetReservationDetailsCustomerDto>> GetAllCustomerReservations(int customerId)
         {
-            throw new NotImplementedException();
+            //var customerReservationsFromDb = await _applicationDbContext.Reservations
+            //    .Where(r => r.UserId == customerId)
+            //    .Include(r => r.SalonServiceId) // Include SalonService for the join
+            //    .ThenInclude(s => s.Salon)  // Include Salon for the join
+            //    .ToListAsync();
+
+            //if (customerReservationsFromDb.Count == 0 || customerReservationsFromDb is null)
+            //    throw new Exception("No reservations available.");
+
+            //var customerReservationsList = customerReservationsFromDb
+            //    .Select(reservation => new GetReservationDetailsCustomerDto
+            //    {
+            //        ReservationId = reservation.Id,
+            //        SalonServiceId = reservation.SalonServiceId,
+            //        SalonName = ,
+            //        SalonCity = ,
+            //        ServiceName = reservation.ServiceName,
+            //        Price = reservation.Price, 
+            //        HaircutDurationTime = reservation.HaircutDurationTime,
+            //        ReservationDay = reservation.ReservationDay,
+            //        ReservationHour = reservation.ReservationHour
+            //    })
+            //    .ToList();
+
+
+            //return customerReservationsList;
+            return null;
         }
 
         public Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId)

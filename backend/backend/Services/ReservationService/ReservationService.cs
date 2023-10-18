@@ -37,15 +37,25 @@ namespace backend.Services.ReservationService
             return await _reservationRepository.MakeReservation(createReservationDto);
         }
 
-        public Task<List<GetReservationDetailsCustomerDto>> GetAllCustomerReservations(int customerId)
+        public async Task<List<GetReservationDetailsCustomerDto>> GetAllCustomerReservations(int customerId)
         {
-            throw new NotImplementedException();
+            var currentUserId = GetUserId();
+            if (customerId <= 0 || currentUserId != customerId)
+                throw new Exception("Not authorized.");
+
+            return await _reservationRepository.GetAllCustomerReservations(customerId);
         }
 
-        public Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId)
+        public async Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId)
         {
-            throw new NotImplementedException();
-        }
+            var currentUserId = GetUserId();
+            if (customerId <= 0 || currentUserId != customerId)
+                throw new Exception("Not authorized.");
 
+            if (reservationId <= 0)
+                throw new Exception("Reservation doesn't exist.");
+
+            return await _reservationRepository.GetCustomerReservationDetails(customerId, reservationId);
+        }
     }
 }
