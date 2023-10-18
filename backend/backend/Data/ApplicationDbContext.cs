@@ -1,6 +1,4 @@
-﻿using backend.Models.Auth;
-using backend.Models.Reservation;
-using backend.Models.Salon;
+﻿using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data
