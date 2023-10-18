@@ -125,7 +125,9 @@ namespace backend.Repositories.SalonRepository
 
         public async Task<List<Salon>> GetAllSalons()
         {
-            var salonsListDb = await _context.Salons.ToListAsync();
+            var salonsListDb = await _context.Salons
+                .Where(s => s.StatusId == 1 || s.StatusId == 4)
+                .ToListAsync();
 
             if (salonsListDb.Count == 0 || salonsListDb is null)
             {
@@ -138,31 +140,30 @@ namespace backend.Repositories.SalonRepository
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
         {
             var salonDetails = await _context.Salons
-                .Where(s => s.Id == salonId)
-                .Select(u => new GetSingleSalonDto
-                {
-                    SalonName = u.SalonName,
-                    SalonCity = u.SalonCity,
-                    SalonAddress = u.SalonAddress,
-                    WorkDays = u.WorkDays,
-                    SalonReviews = u.SalonReviews,
-                    UserDetails = new UsersSalonsDetailsDto
-                    {
-                        UserName = u.User.UserName,
-                        Email = u.User.Email,
-                        PhoneNumber = u.User.PhoneNumber
-                    },
-                    StartTimeHour = u.StartTimeHour,
-                    EndTimeHour = u.EndTimeHour
-                })
-                .FirstOrDefaultAsync();
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == salonId && (s.StatusId == 1 || s.StatusId == 4));
 
             if (salonDetails is null)
             {
                 throw new Exception("Salon doesn't exist");
             }
 
-            return salonDetails;
+            return new GetSingleSalonDto
+            {
+                SalonName = salonDetails.SalonName,
+                SalonCity = salonDetails.SalonCity,
+                SalonAddress = salonDetails.SalonAddress,
+                WorkDays = salonDetails.WorkDays,
+                SalonReviews = salonDetails.SalonReviews,
+                UserDetails = new UsersSalonsDetailsDto
+                {
+                    UserName = salonDetails.User.UserName,
+                    Email = salonDetails.User.Email,
+                    PhoneNumber = salonDetails.User.PhoneNumber,
+                },
+                StartTimeHour = salonDetails.StartTimeHour,
+                EndTimeHour = salonDetails.EndTimeHour
+            };
         }
 
         public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)

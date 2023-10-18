@@ -1,5 +1,4 @@
 ﻿using backend.Dtos.Reservation;
-using backend.Dtos.Salon;
 using backend.Services.ReservationService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

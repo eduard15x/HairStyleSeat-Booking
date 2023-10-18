@@ -66,7 +66,7 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return Json(Conflict(ex));
+                return Json(BadRequest(ex));
             }
         }
 
@@ -82,7 +82,7 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return Json(Conflict(ex));
+                return Json(BadRequest(ex));
             }
         }
 
