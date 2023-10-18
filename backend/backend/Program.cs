@@ -1,6 +1,7 @@
 
 using backend.Data;
 using backend.Repositories.AuthRepository;
+using backend.Repositories.ReservationRepository;
 using backend.Repositories.SalonRepository;
 using backend.Services.AuthService;
 using backend.Services.ReservationService;
@@ -39,6 +40,7 @@ namespace backend
             builder.Services.AddScoped<ISalonService, SalonService>();
             builder.Services.AddScoped<ISalonRepository, SalonRepository>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
             builder.Services.AddAuthentication(x =>
             {

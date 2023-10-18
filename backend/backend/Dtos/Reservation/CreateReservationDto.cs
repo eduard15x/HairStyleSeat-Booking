@@ -11,12 +11,6 @@ namespace backend.Dtos.Reservation
         [Required]
         public int SalonServiceId { get; set; }
         [Required]
-        public string ServiceName { get; set; }
-        [Required]
-        public double Price { get; set; }
-        [Required]
-        public string HaircutDurationTime { get; set; }
-        [Required]
         public string ReservationDay { get; set; }
         [Required]
         public string ReservationHour { get; set; }

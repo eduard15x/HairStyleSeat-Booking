@@ -48,7 +48,7 @@ namespace backend.Helpers
                 throw new Exception("Date format is invalid, respect format: \"MM/dd/yyyy\".");
 
             if (!HelperInputValidationRegex.CheckValidTimeFormat(reservationHour))
-                throw new Exception("Date format is invalid, respect format: \"15:35\".");
+                throw new Exception("Time format is invalid, respect format: \"15:35\".");
 
             var reservationDayObj = DateTime.Parse(reservationDay);
 

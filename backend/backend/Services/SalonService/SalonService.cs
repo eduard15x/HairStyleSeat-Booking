@@ -40,7 +40,7 @@ namespace backend.Services.SalonService
             if (!endTimeValid)
                 throw new Exception("End time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
 
-            if (!HelperTimeValidation.CheckHourInterval(newSalonDetails.StartTimeHour, newSalonDetails.EndTimeHour))
+            if (!HelperDateTimeValidation.CheckHourInterval(newSalonDetails.StartTimeHour, newSalonDetails.EndTimeHour))
                 throw new Exception("Start time hour can not be higher than end time hour.");
 
             return await _salonRepository.CreateNewSalon(newSalonDetails);
@@ -62,7 +62,7 @@ namespace backend.Services.SalonService
             if (!endTimeValid)
                 throw new Exception("End time hour format is not ok. Please respect the format as following: '00:30', '10:00', '07:30', '22:45'.");
 
-            if (!HelperTimeValidation.CheckHourInterval(updatedSalonDto.StartTimeHour, updatedSalonDto.EndTimeHour))
+            if (!HelperDateTimeValidation.CheckHourInterval(updatedSalonDto.StartTimeHour, updatedSalonDto.EndTimeHour))
                 throw new Exception("Start time hour can not be higher than end time hour.");
 
             var updatedSalon = new UpdateSalonDto()
