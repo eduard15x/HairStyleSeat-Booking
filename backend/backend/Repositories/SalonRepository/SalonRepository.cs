@@ -205,8 +205,28 @@ namespace backend.Repositories.SalonRepository
 
             salonFromDb.StatusId = modifySalonStatusDto.SalonStatusId;
             _context.Salons.Update(salonFromDb);
-            await _context.SaveChangesAsync();
+
+            var userWithCurrentSalon = await _context.Users.FirstOrDefaultAsync(u => u.Id == salonFromDb.UserId);
+
+            switch(modifySalonStatusDto.SalonStatusId)
+            {
+                case 1:
+                    userWithCurrentSalon!.Role = "affiliate";
+                    break;
+                case 2:
+                    userWithCurrentSalon!.Role = "customer";
+                    break;
+                case 3:
+                    userWithCurrentSalon!.Role = "customer";
+                    break;
+                case 4:
+                    userWithCurrentSalon!.Role = "affiliate";
+                    break;
+            }
+
+            _context.Users.Update(userWithCurrentSalon!);
             
+            await _context.SaveChangesAsync();
             return true;
         }
 
