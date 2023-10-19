@@ -17,5 +17,6 @@ namespace backend.Models
         public string ReservationDay { get; set; }
         public string ReservationHour { get; set; }
         public DateTime BookSubmitDate { get; set; } = DateTime.Now;
+        public int CompletedReservation { get; set; } = 0;
     }
 }

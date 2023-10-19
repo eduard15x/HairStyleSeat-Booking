@@ -17,6 +17,8 @@ namespace backend.Models
         public string City { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
+        public int Reports { get; set; }
+        public int Suspended { get; set; }
         public string Role { get; set; } = "customer";
     }
 }

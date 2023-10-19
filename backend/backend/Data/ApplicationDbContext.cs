@@ -13,5 +13,7 @@ namespace backend.Data
         public DbSet<Service> SalonServices { get; set; }
         public DbSet<Status> SalonStatuses { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Report> Reports { get; set; }
     }
 }
