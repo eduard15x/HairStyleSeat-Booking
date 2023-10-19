@@ -12,6 +12,7 @@ namespace backend.Services.SalonService
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<string> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);
+        Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto);
         #endregion
 
         #region SalonService

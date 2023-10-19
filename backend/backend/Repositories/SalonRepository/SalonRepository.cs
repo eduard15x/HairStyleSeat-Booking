@@ -222,6 +222,55 @@ namespace backend.Repositories.SalonRepository
             return true;
         }
 
+        public async Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto)
+        {
+            var salonFromDb = await _context.Salons
+                .FirstOrDefaultAsync(s => s.Id == reviewSalonDto.SalonId);
+            if (salonFromDb is null)
+                throw new Exception("Salon doesn't exist.");
+
+            var userHasAnyReservationCompleted = await _context.Reservations
+                .AnyAsync(r => r.UserId == reviewSalonDto.UserId && r.SalonId == reviewSalonDto.SalonId && r.CompletedReservation == 1);
+            if (!userHasAnyReservationCompleted)
+                throw new Exception("You can't review a salon until complete a reservation.");
+
+            var userAlreadyReviewSalon = await _context.Reviews
+                .AnyAsync(r => r.UserId == reviewSalonDto.UserId && r.SalonId == reviewSalonDto.SalonId);
+            if (userAlreadyReviewSalon)
+                throw new Exception("User already review this salon.");
+
+            var newReview = new Review
+            {
+                UserId = reviewSalonDto.UserId,
+                SalonId = reviewSalonDto.SalonId,
+                ReviewRating = reviewSalonDto.ReviewRating,
+                ReviewMessage = reviewSalonDto.ReviewMessage
+            };
+
+            _context.Reviews.Add(newReview);
+            await _context.SaveChangesAsync();
+
+            var salonReviews = await _context.Reviews
+                .Where(s => s.SalonId == reviewSalonDto.SalonId)
+                .ToListAsync();
+
+            var ratingReviewsSum = 0;
+            decimal averageRatingFromReviews = 0;
+
+            foreach (var review in salonReviews)
+            {
+                ratingReviewsSum += review.ReviewRating;
+            }
+
+            averageRatingFromReviews = (decimal)ratingReviewsSum / salonReviews.Count;
+
+            salonFromDb.SalonReviews = averageRatingFromReviews;
+            _context.Salons.Update(salonFromDb);
+            await _context.SaveChangesAsync();
+
+            return "Your review was submitted.";
+        }
+
         #endregion
 
         #region SalonService Methods
@@ -327,7 +376,6 @@ namespace backend.Repositories.SalonRepository
 
             return true;
         }
-
         #endregion
     }
 }

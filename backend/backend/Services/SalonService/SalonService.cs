@@ -1,4 +1,5 @@
-﻿using backend.Dtos.Salon;
+﻿using backend.Data;
+using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
 using backend.Helpers;
 using backend.Repositories.SalonRepository;
@@ -162,6 +163,24 @@ namespace backend.Services.SalonService
 
             return "Salon status was modified.";
         }
+
+        public async Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto)
+        {
+            var currentUserId = GetUserId();
+            if (reviewSalonDto.UserId != currentUserId || reviewSalonDto.UserId <= 0)
+                throw new Exception("Not authorized!");
+
+            if (reviewSalonDto.SalonId <= 0)
+                throw new Exception("Salon doesn't exist.");
+
+            var checkIfReviewRatingIsCorrect = Enum.IsDefined(typeof(ReviewRating), reviewSalonDto.ReviewRating);
+
+            if (!checkIfReviewRatingIsCorrect)
+                throw new Exception("Not a valid rating to send a review. (1-10)");
+
+            return await _salonRepository.ReviewSalon(reviewSalonDto);
+        }
+
         #endregion
 
         #region SalonService

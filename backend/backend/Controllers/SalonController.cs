@@ -103,7 +103,6 @@ namespace backend.Controllers
             }
         }
 
-
         [Authorize(Roles = "admin, employee")]
         [HttpPut("modify-salon-status")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
@@ -118,6 +117,24 @@ namespace backend.Controllers
             catch (Exception ex)
             {
                 return Json(Conflict(ex.Message));
+            }
+        }
+
+
+        [Authorize(Roles = "admin, employee, customer, affiliate")]
+        [HttpPut("review-salon")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> ReviewSalon([FromBody] ReviewSalonDto reviewSalonDto)
+        {
+            try
+            {
+                var response = await _salonService.ReviewSalon(reviewSalonDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
             }
         }
         #endregion
