@@ -173,20 +173,11 @@ namespace backend.Repositories.SalonRepository
             if (salonFromDb is null)
                 throw new Exception("Salon doesn't exist or you are not authorized to make this change.");
 
-            string[] workDaysArray = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", };
-            var workDaysLower = workDaysDto.WorkDays.ToLower();
-            var stringIsValid = HelperInputValidationRegex.CheckWorkDaysInput(workDaysLower);
+            salonFromDb.WorkDays = workDaysDto.WorkDays;
+            _context.Salons.Update(salonFromDb);
+            await _context.SaveChangesAsync();
 
-            if (stringIsValid)
-            {
-                salonFromDb.WorkDays = workDaysLower;
-                _context.Salons.Update(salonFromDb);
-                await _context.SaveChangesAsync();
-
-                return "Work days updated successfully";
-            }
-
-            return "Work days of salon not updated because the pattern is not respected.";
+            return "Work days of salon updated successfully.";
         }
 
         public async Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto)

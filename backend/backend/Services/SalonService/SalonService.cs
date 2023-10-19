@@ -2,6 +2,7 @@
 using backend.Dtos.SalonService;
 using backend.Helpers;
 using backend.Repositories.SalonRepository;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace backend.Services.SalonService
@@ -43,6 +44,15 @@ namespace backend.Services.SalonService
             if (!HelperDateTimeValidation.CheckHourInterval(newSalonDetails.StartTimeHour, newSalonDetails.EndTimeHour))
                 throw new Exception("Start time hour can not be higher than end time hour.");
 
+            var workDaysLower = newSalonDetails.WorkDays.ToLower();
+            var stringIsValid = HelperInputValidationRegex.CheckWorkDaysInput(workDaysLower);
+
+            if (!stringIsValid)
+            {
+                throw new Exception("Work days not updated successfully. Pattern is incorrect. (\"monday,tuesday,saturday etc\")");
+            }
+
+            newSalonDetails.WorkDays = workDaysLower;
             return await _salonRepository.CreateNewSalon(newSalonDetails);
         }
 
@@ -65,6 +75,14 @@ namespace backend.Services.SalonService
             if (!HelperDateTimeValidation.CheckHourInterval(updatedSalonDto.StartTimeHour, updatedSalonDto.EndTimeHour))
                 throw new Exception("Start time hour can not be higher than end time hour.");
 
+            var workDaysLower = updatedSalonDto.WorkDays.ToLower();
+            var stringIsValid = HelperInputValidationRegex.CheckWorkDaysInput(workDaysLower);
+
+            if (!stringIsValid)
+            {
+                throw new Exception("Work days not updated successfully. Pattern is incorrect. (\"monday,tuesday,saturday etc\")");
+            }
+
             var updatedSalon = new UpdateSalonDto()
             {
                 Id = updatedSalonDto.Id,
@@ -72,7 +90,7 @@ namespace backend.Services.SalonService
                 SalonAddress = updatedSalonDto.SalonAddress,
                 SalonCity = updatedSalonDto.SalonCity,
                 UserId = updatedSalonDto.UserId,
-                WorkDays = updatedSalonDto.WorkDays,
+                WorkDays = workDaysLower,
                 StartTimeHour = updatedSalonDto.StartTimeHour,
                 EndTimeHour = updatedSalonDto.EndTimeHour,
             };
@@ -108,6 +126,15 @@ namespace backend.Services.SalonService
             if (string.IsNullOrEmpty(workDaysDto.WorkDays) || string.IsNullOrWhiteSpace(workDaysDto.WorkDays))
                 return "You can not set an empty field for the work days of salon";
 
+            var workDaysLower = workDaysDto.WorkDays.ToLower();
+            var stringIsValid = HelperInputValidationRegex.CheckWorkDaysInput(workDaysLower);
+
+            if (!stringIsValid)
+            {
+                return "Work days not updated successfully. Pattern is incorrect. (\"monday,tuesday,saturday etc\")";
+            }
+
+            workDaysDto.WorkDays = workDaysLower;
             return await _salonRepository.SetWorkDays(workDaysDto);
         }
 
