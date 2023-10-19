@@ -7,5 +7,6 @@ namespace backend.Services.ReservationService
         Task<GetReservationDetailsCustomerDto> MakeReservation(CreateReservationDto createReservationDto);
         Task<List<GetReservationDetailsCustomerDto>> GetAllCustomerReservations(int customerId);
         Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId);
+        Task<string> ConfirmReservation(int reservationId, int salonOwnerId);
     }
 }

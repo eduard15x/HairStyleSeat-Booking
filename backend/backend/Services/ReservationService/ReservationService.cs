@@ -57,5 +57,17 @@ namespace backend.Services.ReservationService
 
             return await _reservationRepository.GetCustomerReservationDetails(customerId, reservationId);
         }
+
+        public async Task<string> ConfirmReservation(int reservationId, int salonOwnerId)
+        {
+            var currentUserId = GetUserId();
+            if (currentUserId != salonOwnerId || salonOwnerId <= 0)
+                throw new Exception("Not authorized");
+
+            if (reservationId <= 0)
+                throw new Exception("Reservation not found.");
+
+            return await _reservationRepository.ConfirmReservation(reservationId, salonOwnerId);
+        }
     }
 }

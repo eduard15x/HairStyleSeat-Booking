@@ -69,5 +69,22 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize(Roles = "admin, affiliate, employee")]
+        [HttpPut("confirm-customer-reservation")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> ConfirmReservation(int reservationId, int salonOwnerId)
+        {
+            try
+            {
+                var response = await _reservationService.ConfirmReservation(reservationId, salonOwnerId);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+
     }
 }

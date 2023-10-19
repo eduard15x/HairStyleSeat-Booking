@@ -126,5 +126,21 @@ namespace backend.Repositories.ReservationRepository
                 ReservationHour = reservationFromDb.ReservationHour,
             };
         }
+
+        public async Task<string> ConfirmReservation(int reservationId, int salonOwnerId)
+        {
+            var reservationFromDb = await _applicationDbContext.Reservations.FirstOrDefaultAsync(r => r.Id == reservationId);
+            if (reservationFromDb is null)
+                throw new Exception("Reservation not found.");
+
+            if (reservationFromDb.CompletedReservation == 1)
+                throw new Exception("Reservation is already completed.");
+
+            reservationFromDb.CompletedReservation = 1;
+            _applicationDbContext.Update(reservationFromDb);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return "Reservation completed.";
+        }
     }
 }
