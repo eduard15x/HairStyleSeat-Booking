@@ -142,5 +142,22 @@ namespace backend.Repositories.ReservationRepository
 
             return "Reservation completed.";
         }
+
+        public async Task<string> CancelReservation(int reservationId, int customerId)
+        {
+            var reservationFromDb = await _applicationDbContext.Reservations
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
+
+            if (reservationFromDb is null)
+                throw new Exception("Reservation not found.");
+
+            if (reservationFromDb.CompletedReservation == 1)
+                throw new Exception("You can't cancel a completed reservation.");
+
+            _applicationDbContext.Reservations.Remove(reservationFromDb);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return "Reservation canceled.";
+        }
     }
 }

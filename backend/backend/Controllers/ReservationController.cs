@@ -86,5 +86,22 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize(Roles = "admin, affiliate, employee, customer")]
+        [HttpDelete("cancel-reservation")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> CancelReservation(int reservationId, int customerId)
+        {
+            try
+            {
+                var response = await _reservationService.CancelReservation(reservationId, customerId);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+
     }
 }
