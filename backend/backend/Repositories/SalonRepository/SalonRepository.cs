@@ -271,6 +271,49 @@ namespace backend.Repositories.SalonRepository
             return "Your review was submitted.";
         }
 
+        public async Task<string> ReportUser(ReportUserDto reportUserDto)
+        {
+            var userFromDb = await _context.Users.FirstOrDefaultAsync(ru => ru.Id ==  reportUserDto.UserId);
+            if (userFromDb is null)
+                throw new Exception("User not found");
+
+            var salonFromDb = await _context.Salons.FirstOrDefaultAsync(s => s.Id == reportUserDto.SalonId);
+            if (salonFromDb is null)
+                throw new Exception("Salon not found");
+
+            var userHadAnyReservation = await _context.Reservations
+                .AnyAsync(r => r.UserId == reportUserDto.UserId && r.SalonId == reportUserDto.SalonId);
+
+            if (!userHadAnyReservation)
+                throw new Exception("You can not report an user if he hasn't had no reservation for your salon.");
+
+            var userIsAlreadyReportedBySalon = await _context.Reports
+                .AnyAsync(r => r.UserId == reportUserDto.UserId && r.SalonId == reportUserDto.SalonId);
+
+            if (userIsAlreadyReportedBySalon)
+                throw new Exception("User is already reported by your salon.");
+
+            var newReport = new Report
+            {
+                UserId = reportUserDto.UserId,
+                SalonId = reportUserDto.SalonId,
+                ReportMessage = reportUserDto.ReportMessage,
+            };
+
+            _context.Reports.Add(newReport);
+            var usersTotalReports = userFromDb.Reports + 1;
+            userFromDb.Reports = usersTotalReports;
+
+            if (usersTotalReports >= 5)
+            {
+                userFromDb.Suspended = 1;
+            }
+
+            _context.Users.Update(userFromDb);
+            await _context.SaveChangesAsync();
+
+            return "User was reported.";
+        }
         #endregion
 
         #region SalonService Methods
@@ -376,6 +419,7 @@ namespace backend.Repositories.SalonRepository
 
             return true;
         }
+
         #endregion
     }
 }

@@ -137,8 +137,25 @@ namespace backend.Controllers
                 return Json(BadRequest(ex.Message));
             }
         }
-        #endregion
 
+        [Authorize(Roles = "admin, employee, customer, affiliate")]
+        [HttpPut("report-user")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> ReportUser([FromBody] ReportUserDto reportUserDto)
+        {
+            try
+            {
+                var response = await _salonService.ReportUser(reportUserDto);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex.Message));
+            }
+        }
+
+        #endregion
         #region SalonService
         [Authorize(Roles = "admin, customer, affiliate")]
         [HttpPost("create-service-for-salon")]

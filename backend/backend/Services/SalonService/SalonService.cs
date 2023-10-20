@@ -3,7 +3,6 @@ using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
 using backend.Helpers;
 using backend.Repositories.SalonRepository;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace backend.Services.SalonService
@@ -179,6 +178,20 @@ namespace backend.Services.SalonService
                 throw new Exception("Not a valid rating to send a review. (1-10)");
 
             return await _salonRepository.ReviewSalon(reviewSalonDto);
+        }
+
+        public async Task<string> ReportUser(ReportUserDto reportUserDto)
+        {
+            if (reportUserDto.UserId <= 0)
+                throw new Exception("User doesn't exist.");
+
+            if (reportUserDto.SalonId <= 0)
+                throw new Exception("Salon not found.");
+
+            if (string.IsNullOrEmpty(reportUserDto.ReportMessage))
+                throw new Exception("Report reason can not be empty.");
+
+            return await _salonRepository.ReportUser(reportUserDto);
         }
 
         #endregion

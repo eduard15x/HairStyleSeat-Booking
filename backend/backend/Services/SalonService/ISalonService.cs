@@ -13,6 +13,7 @@ namespace backend.Services.SalonService
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<string> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);
         Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto);
+        Task<string> ReportUser(ReportUserDto reportUserDto);
         #endregion
 
         #region SalonService

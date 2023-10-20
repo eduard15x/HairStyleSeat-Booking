@@ -14,6 +14,7 @@ namespace backend.Repositories.SalonRepository
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);
         Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto);
+        Task<string> ReportUser(ReportUserDto reportUserDto);
         #endregion
 
         #region SalonService
