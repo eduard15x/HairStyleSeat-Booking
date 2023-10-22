@@ -2,7 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 
 const Menu = () => {
   return (
-    <div>
+    <div className="">
       <Link to="book-a-seat">Book a seat</Link>
       <Link to="reservation-list">Your reservations</Link>
       <Link to="become-an-affiliate">Become an affiliate</Link>
