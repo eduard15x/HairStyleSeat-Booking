@@ -10,12 +10,16 @@ import SalonServices from "./pages/Salon/SalonServices";
 import SalonReservations from "./pages/Salon/SalonReservations";
 import SalonDetails from "./pages/Salon/SalonDetails";
 import About from "./pages/About";
+import Login from "./components/Authentication/Login";
+import Register from "./components/Authentication/Register";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Homepage />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
           <Route path="about" element={<About />} />
         </Route>
         <Route path="/menu" element={<Menu />}>
