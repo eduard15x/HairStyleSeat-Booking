@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const Login = () => {
   return (
     <>
-      <h1 className="text-gray-200 text-2xl tablet:text-4xl text-center pb-10">
+      <h1 className="text-gray-200 text-2xl tablet:text-4xl text-center pb-10 mt-6">
         Login
       </h1>
       <form
