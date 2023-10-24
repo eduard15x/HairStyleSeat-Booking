@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Page404 from "./components/Page404";
 import Homepage from "./pages/Homepage";
 import Menu from "./pages/Menu";
@@ -15,7 +15,10 @@ import Register from "./components/Authentication/Register";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+import { useUserContext } from './hooks/useUserContext';
+
 function App() {
+  const { userState } = useUserContext();
 
   const MenuLayout = () => {
     return (
@@ -36,29 +39,58 @@ function App() {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="about" element={<About />} />
+      <Router>
+        <Routes>
 
-        <Route path="/menu" element={<MenuLayout />}>
-          <Route index element={<Menu />} />
-          <Route path="book-a-seat" element={<BookService />} />
-          <Route path="reservation-list" element={<CustomerReservations />} />
-          <Route path="become-an-affiliate" element={<SalonRegistration />} />
-          {/* Below is user with role "affiliate" that is allowed to display salon details */}
-          <Route path="salon" element={<SalonLayout />}>
-            <Route index element={<Salon />} />
-            <Route path="details" element={<SalonDetails />} />
-            <Route path="reservation-list" element={<SalonReservations />} />
-            <Route path="services" element={<SalonServices />} />
+          {userState.userId === 0
+          ? <>
+            <Route path="/" element={<Homepage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="about" element={<About />} />
+          </>
+          :
+          <>
+            <Route path="/" element={<Navigate to="/menu" />} />
+            <Route path="login" element={<Navigate to="/menu" />} />
+            <Route path="register" element={<Navigate to="/menu" />} />
+            <Route path="about" element={<Navigate to="/menu" />} />
+          </>
+          }
+
+          {userState.userId !== 0
+          ?
+          <Route path="/menu" element={<MenuLayout />}>
+            <Route index element={<Menu />} />
+            <Route path="book-a-seat" element={<BookService />} />
+            <Route path="reservation-list" element={<CustomerReservations />} />
+            <Route path="become-an-affiliate" element={<SalonRegistration />} />
+            {/* Below is user with role "affiliate" that is allowed to display salon details */}
+            <Route path="salon" element={<SalonLayout />}>
+              <Route index element={<Salon />} />
+              <Route path="details" element={<SalonDetails />} />
+              <Route path="reservation-list" element={<SalonReservations />} />
+              <Route path="services" element={<SalonServices />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </Router>
+          :
+          <Route path="/menu" element={<Navigate to="/" />}>
+            <Route index element={<Navigate to="/login" />} />
+            <Route path="book-a-seat" element={<Navigate to="/login" />} />
+            <Route path="reservation-list" element={<Navigate to="/login" />} />
+            <Route path="become-an-affiliate" element={<Navigate to="/login" />} />
+            {/* Below is user with role "affiliate" that is allowed to display salon details */}
+            <Route path="salon" element={<Navigate to="/login" />}>
+              <Route index element={<Navigate to="/login" />} />
+              <Route path="details" element={<Navigate to="/login" />} />
+              <Route path="reservation-list" element={<Navigate to="/login" />} />
+              <Route path="services" element={<Navigate to="/" />} />
+            </Route>
+          </Route>
+          }
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </Router>
   );
 }
 
