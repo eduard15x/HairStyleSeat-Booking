@@ -30,7 +30,7 @@ namespace backend.Services.TokenService
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var encrypterToken = tokenHandler.WriteToken(token);
 
-            return new UserTokenDto { Email = user.Email, Token = encrypterToken };
+            return new UserTokenDto { Email = user.Email, Role = user.Role, UserId = user.Id, Token = encrypterToken };
         }
     }
 }

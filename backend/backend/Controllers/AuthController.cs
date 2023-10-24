@@ -58,7 +58,14 @@ namespace backend.Controllers
                         SameSite = SameSiteMode.None,
                     });
 
-                return Json(Ok()); // we dont need to send a jwt, cookie will be in the header of the response
+                var userInformation = new
+                {
+                    email = userToken.Email,
+                    role = userToken.Role,
+                    userId = userToken.UserId
+                };
+
+                return Json(Ok(userInformation)); // we dont need to send a jwt, cookie will be in the header of the response
             }
             catch (Exception ex)
             {

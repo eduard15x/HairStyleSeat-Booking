@@ -1,5 +1,6 @@
 
 using backend.Data;
+using backend.Models;
 using backend.Repositories.AuthRepository;
 using backend.Repositories.ReservationRepository;
 using backend.Repositories.SalonRepository;
@@ -8,6 +9,7 @@ using backend.Services.ReservationService;
 using backend.Services.SalonService;
 using backend.Services.TokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +33,15 @@ namespace backend
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+                }));
 
             // services
             builder.Services.AddScoped<IDbConnection>(x => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -89,6 +100,8 @@ namespace backend
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             // middlewears
             app.UseAuthentication();
