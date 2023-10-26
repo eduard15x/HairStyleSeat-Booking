@@ -41,9 +41,11 @@ function App() {
   return (
       <Router>
         <Routes>
+          {/*//TODO protected routes -> https://www.robinwieruch.de/react-router-private-routes/ */}
 
           {userState.userId === 0
-          ? <>
+          ?
+          <>
             <Route path="/" element={<Homepage />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

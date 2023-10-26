@@ -18,7 +18,7 @@ namespace backend.Repositories.AuthRepository
         {
             if (await _dbContext.Users.AnyAsync(u => u.Email == newUser.Email))
             {
-                throw new Exception("User already exists.");
+                throw new Exception("User already exists with this email.");
             }
             // Hash and Salt password
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
