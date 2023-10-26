@@ -7,11 +7,11 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const submitForm = async (e: React.FormEvent<HTMLFormElement> ) => {
+  const submitLoginForm = async (e: React.FormEvent<HTMLFormElement> ) => {
     e.preventDefault();
 
     login({ email: email, password: password }, 'https://localhost:44315/api/user/login');
-  }
+  };
 
   return (
     <>
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
         Login
       </h1>
       <form
-        onSubmit={submitForm}
+        onSubmit={submitLoginForm}
         action="#"
         method="POST"
         className="flex flex-col mx-auto py-10 tablet:w-[480px] tablet:border-2 tablet:border-gray-600"
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
 export default Login;
