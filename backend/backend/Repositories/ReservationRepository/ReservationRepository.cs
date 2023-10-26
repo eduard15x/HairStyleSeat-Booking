@@ -76,7 +76,7 @@ namespace backend.Repositories.ReservationRepository
                 .ToListAsync();
 
             if (customerReservationsFromDb.Count == 0 || customerReservationsFromDb is null)
-                throw new Exception("No reservations available.");
+                return new List<GetReservationDetailsCustomerDto>();
 
             var customerReservationsList = customerReservationsFromDb
                 .Select(reservation => new GetReservationDetailsCustomerDto
