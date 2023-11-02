@@ -70,7 +70,7 @@ const CustomerReservations = () => {
               <td className="px-1 tablet:px-2 laptop:px-3 py-5 font-bold">{index + 1}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.salonName}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.serviceName}</td>
-              <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.price}</td>
+              <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">${item.price}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.haircutDurationTime}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.reservationDay}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.reservationHour}</td>

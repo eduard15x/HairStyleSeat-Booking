@@ -8,7 +8,7 @@ namespace backend.Repositories.SalonRepository
         #region Salon
         Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails);
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updateSalonDto);
-        Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search);
+        Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search, string salonCities);
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);

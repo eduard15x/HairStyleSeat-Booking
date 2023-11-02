@@ -57,11 +57,11 @@ namespace backend.Controllers
         [HttpGet("list")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetAllSalons(int page, int pageSize, string search = "")
+        public async Task<ActionResult> GetAllSalons(int page, int pageSize, string search = "", string selectedCities = "")
         {
             try
             {
-                var response = await _salonService.GetAllSalons(page, pageSize, search);
+                var response = await _salonService.GetAllSalons(page, pageSize, search, selectedCities);
                 return Json(Ok(response));
             }
             catch (Exception ex)

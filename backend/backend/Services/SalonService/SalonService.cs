@@ -99,9 +99,9 @@ namespace backend.Services.SalonService
             return await _salonRepository.UpdateSalon(updatedSalon);
         }
 
-        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search)
+        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search, string selectedCities)
         {
-            return await _salonRepository.GetAllSalons(page, pageSize, search);
+            return await _salonRepository.GetAllSalons(page, pageSize, search, selectedCities);
         }
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)

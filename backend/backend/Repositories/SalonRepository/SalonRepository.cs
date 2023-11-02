@@ -123,7 +123,7 @@ namespace backend.Repositories.SalonRepository
             };
         }
 
-        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search)
+        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search, string selectedCities)
         {
             var query = _context.Salons
                 .Where(s => s.StatusId == 1 || s.StatusId == 4);
@@ -131,6 +131,12 @@ namespace backend.Repositories.SalonRepository
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(s => s.SalonName.Contains(search));
+            }
+
+            if (!string.IsNullOrEmpty(selectedCities))
+            {
+                var cities = selectedCities.Split(',').Select(city => city.Trim());
+                query = query.Where(s => cities.Contains(s.SalonCity));
             }
 
             var totalItemCount = await query.CountAsync();

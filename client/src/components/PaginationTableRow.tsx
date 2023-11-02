@@ -48,8 +48,8 @@ export const PaginationTableRow = ({currentPage, pageSize, totalCount, handlePag
             <p className="text-sm text-gray-300">
                 Showing
                 <span className="font-bold"> {startListCount}  </span>
-                to
-                <span className="font-bold"> {endListCount}  </span>
+                -
+                <span className="font-bold"> {endListCount < totalCount ? endListCount : totalCount}  </span>
                 of
                 <span className="font-bold"> {totalCount}  </span>
                 results
