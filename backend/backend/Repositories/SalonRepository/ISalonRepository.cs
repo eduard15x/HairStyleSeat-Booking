@@ -1,6 +1,5 @@
 ﻿using backend.Dtos.Salon;
 using backend.Dtos.SalonService;
-using backend.Models;
 
 namespace backend.Repositories.SalonRepository
 {
@@ -9,7 +8,7 @@ namespace backend.Repositories.SalonRepository
         #region Salon
         Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails);
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updateSalonDto);
-        Task<List<Salon>> GetAllSalons();
+        Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search);
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);

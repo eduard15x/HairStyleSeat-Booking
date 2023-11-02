@@ -123,18 +123,27 @@ namespace backend.Repositories.SalonRepository
             };
         }
 
-        public async Task<List<Salon>> GetAllSalons()
+        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search)
         {
-            var salonsListDb = await _context.Salons
-                .Where(s => s.StatusId == 1 || s.StatusId == 4)
-                .ToListAsync();
+            var query = _context.Salons
+                .Where(s => s.StatusId == 1 || s.StatusId == 4);
 
-            if (salonsListDb.Count == 0 || salonsListDb is null)
+            if (!string.IsNullOrEmpty(search))
             {
-                throw new Exception("No salons in the list.");
+                query = query.Where(s => s.SalonName.Contains(search));
             }
 
-            return salonsListDb;
+            var totalItemCount = await query.CountAsync();
+
+            var salonsListDb = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new GetSalonListDto {
+                Salons = salonsListDb,
+                TotalSalons = totalItemCount
+            };
         }
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)

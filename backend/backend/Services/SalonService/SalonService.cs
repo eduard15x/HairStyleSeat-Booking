@@ -25,6 +25,7 @@ namespace backend.Services.SalonService
 
         #region Salon
         public async Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails)
+            // TODO validate salon status ID
         {
             var currentUser = GetUserId();
             if (newSalonDetails.UserId != currentUser || currentUser == 0)
@@ -98,9 +99,9 @@ namespace backend.Services.SalonService
             return await _salonRepository.UpdateSalon(updatedSalon);
         }
 
-        public async Task<dynamic> GetAllSalons()
+        public async Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search)
         {
-            return await _salonRepository.GetAllSalons();
+            return await _salonRepository.GetAllSalons(page, pageSize, search);
         }
 
         public async Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId)
@@ -140,6 +141,7 @@ namespace backend.Services.SalonService
 
         public async Task<string> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto)
         {
+            // TODO - validate salon status Id
             var currentUserID = GetUserId();
 
             if (modifySalonStatusDto.EmployeeId <= 0 || modifySalonStatusDto.EmployeeId != currentUserID)

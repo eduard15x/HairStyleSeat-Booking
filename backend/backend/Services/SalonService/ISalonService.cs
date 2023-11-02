@@ -8,7 +8,7 @@ namespace backend.Services.SalonService
         #region Salon
         Task<GetSingleSalonDto> CreateNewSalon(CreateNewSalonDto newSalonDetails);
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updatedSalonDto);
-        Task<dynamic> GetAllSalons();
+        Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search);
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<string> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);
