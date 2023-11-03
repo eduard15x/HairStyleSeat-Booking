@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.8",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
+    "react-calendar": "^4.6.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.17.0",
