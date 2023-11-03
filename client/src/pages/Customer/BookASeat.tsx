@@ -4,6 +4,7 @@ import { PaginationTableRow } from '../../components/PaginationTableRow';
 
 import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { ReservationModal } from '../../components/ReservationModal';
 
 // TODO - refactoring
 const BookASeat = () => {
@@ -27,6 +28,10 @@ const BookASeat = () => {
   const [searchStringBtn, setSearchStringBtn] = useState<string>(searchString);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [filterModalShow, setFilterModalShow] = useState<boolean>(false);
+
+  //reservation modal
+  const [showReservationModal, setShowReservationModal] = useState<boolean>(false);
+
 
   const pageSize = 8;
   // Render checkboxes for each city
@@ -60,6 +65,11 @@ const BookASeat = () => {
   };
 
 
+  // reservation modal
+  const [salonId, setSalonId] = useState<number>(0);
+  const handleReservationModal = () => setShowReservationModal(showReservationModal ? false : true);
+
+
   const getSalons = async () => {
     setIsFetch(true);
 
@@ -86,6 +96,7 @@ const BookASeat = () => {
     getSalons();
   }, [currentPage, searchStringBtn])
 
+  console.log(salonId)
 
   return (
     <div>
@@ -159,7 +170,15 @@ const BookASeat = () => {
             ?
             <tbody className='max-h-[640px] flex flex-col overflow-y-auto'>
               {salons.map((item, index) => (
-                <tr key={index} data-salon-id={item.id} className="w-full flex flex-row text-gray-300 bg-[#252525] border-b border-[#575757] hover:bg-[#3d3d3d] hover:cursor-pointer">
+                <tr
+                  key={index}
+                  data-salon-id={item.id}
+                  className="w-full flex flex-row text-gray-300 bg-[#252525] border-b border-[#575757] hover:bg-[#3d3d3d] hover:cursor-pointer"
+                  onClick={() => {
+                    handleReservationModal();
+                    setSalonId(item.id);
+                  }}
+                >
                   {/* <td className="px-1 tablet:px-2 laptop:px-3 py-5 font-bold">{index + 1}</td> */}
                   <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1 text-center">{item.salonName}</td>
                   <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1 text-center">{item.salonCity}</td>
@@ -188,6 +207,7 @@ const BookASeat = () => {
           }
         </table>
       </div>
+      <ReservationModal showReservationModal={showReservationModal} handleReservationModal={handleReservationModal} salonId={salonId} />
     </div>
   )
 }

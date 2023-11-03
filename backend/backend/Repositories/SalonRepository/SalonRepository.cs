@@ -386,6 +386,7 @@ namespace backend.Repositories.SalonRepository
 
             var salonServicesList = salonServicesFromDb.Select(ss => new GetSalonServiceDto
             {
+                ServiceId = ss.Id,
                 ServiceName = ss.ServiceName,
                 Price = ss.Price,
                 HaircutDurationTime = Convert.ToString((Convert.ToInt32(ss.HaircutDurationTime)) / 60) + " minutes"
