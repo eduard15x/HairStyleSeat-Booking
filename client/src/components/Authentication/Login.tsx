@@ -35,6 +35,7 @@ export const Login: React.FC = () => {
             name="Email"
             id="Email"
             placeholder="Email"
+            autoComplete="email"
             className="w-10/12 tablet:w-8/12 mx-auto pb-2.5 text-md tablet:text-xl placeholder:text-center text-gray-300 bg-transparent outline-none border-b-2 border-b-gray-600  focus-visible:border-b-gray-300"
           />
         </label>
@@ -47,6 +48,7 @@ export const Login: React.FC = () => {
             name="Password"
             id="Password"
             placeholder="Password"
+            autoComplete="current-password"
             className="w-10/12 tablet:w-8/12 mx-auto pb-2.5 text-md tablet:text-xl placeholder:text-center text-gray-300 bg-transparent outline-none border-b-2 border-b-gray-600  focus-visible:border-b-gray-300"
           />
         </label>

@@ -98,3 +98,17 @@ export interface IProps {
     isCanceled: boolean;
     handleConfirm: () => void;
 };
+
+
+
+
+//
+export interface ISalonRegistration {
+    salonName: string;
+    salonCity: string;
+    salonAddress: string;
+    userId: number;
+    workDays: string;
+    startTimeHour: string;
+    endTimeHour: string;
+};
