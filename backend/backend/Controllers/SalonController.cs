@@ -86,6 +86,22 @@ namespace backend.Controllers
             }
         }
 
+        [HttpGet("userSalon")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> GetSingleSalonDetailsForUser()
+        {
+            try
+            {
+                var response = await _salonService.GetSingleSalonDetailsForUser();
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(BadRequest(ex));
+            }
+        }
+
         [Authorize(Roles = "admin, customer, affiliate")]
         [HttpPut("set-work-days")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]

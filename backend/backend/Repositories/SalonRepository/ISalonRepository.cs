@@ -10,6 +10,7 @@ namespace backend.Repositories.SalonRepository
         Task<GetSingleSalonDto> UpdateSalon(UpdateSalonDto updateSalonDto);
         Task<GetSalonListDto> GetAllSalons(int page, int pageSize, string search, string salonCities);
         Task<GetSingleSalonDto> GetSingleSalonDetails(int salonId);
+        Task<int> GetSingleSalonDetailsForUser(int currentUserId);
         Task<string> SetWorkDays(SetWorkDaysDto workDaysDto);
         Task<bool> ModifySalonStatus(ModifySalonStatusDto modifySalonStatusDto);
         Task<string> ReviewSalon(ReviewSalonDto reviewSalonDto);

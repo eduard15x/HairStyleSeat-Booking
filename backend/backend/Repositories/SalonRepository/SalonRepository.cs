@@ -180,6 +180,18 @@ namespace backend.Repositories.SalonRepository
                 EndTimeHour = salonDetails.EndTimeHour
             };
         }
+        public async Task<int> GetSingleSalonDetailsForUser(int currentUserId)
+        {
+            var salonDetails = await _context.Salons
+                .FirstOrDefaultAsync(s => s.UserId == currentUserId);
+
+            if (salonDetails == null)
+            {
+                return 0;
+            }
+
+            return salonDetails.StatusId;
+        }
 
         public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)
         {

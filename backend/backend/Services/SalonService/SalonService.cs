@@ -114,6 +114,16 @@ namespace backend.Services.SalonService
             return await _salonRepository.GetSingleSalonDetails(salonId);
         }
 
+        public async Task<int> GetSingleSalonDetailsForUser()
+        {
+            var currentUserID = GetUserId();
+
+            if (currentUserID <= 0 || currentUserID == null)
+                throw new Exception("User not authorized or not logged in.");
+
+            return await _salonRepository.GetSingleSalonDetailsForUser(currentUserID);
+        }
+
         public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)
         {
             var currentUserID = GetUserId();
