@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../../hooks/useLogin';
+const LOGIN_URL_STRING = process.env.REACT_APP_LOGIN_URL;
 
-const Login: React.FC = () => {
+export const Login: React.FC = () => {
   const { login, isLoading, error} = useLogin();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +11,8 @@ const Login: React.FC = () => {
   const submitLoginForm = async (e: React.FormEvent<HTMLFormElement> ) => {
     e.preventDefault();
 
-    login({ email: email, password: password }, 'https://localhost:44315/api/user/login');
+    console.log(LOGIN_URL_STRING)
+    login({ email: email, password: password }, LOGIN_URL_STRING!);
   };
 
   return (
@@ -69,5 +71,3 @@ const Login: React.FC = () => {
     </>
   );
 };
-
-export default Login;

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Menu = () => {
+export const Menu = () => {
 
   const user = "X";
 
@@ -14,7 +14,5 @@ const Menu = () => {
         : <Link to="salon" className="hover:text-gray-200 mt-10 laptop:mt-14">Your salon</Link>
       }
     </div>
-  )
-}
-
-export default Menu;
+  );
+};

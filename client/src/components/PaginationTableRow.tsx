@@ -1,13 +1,7 @@
 import { useState } from "react";
+import { IPaginationProps } from "../shared/interfaces";
 
-interface PaginationProps {
-    currentPage: number;
-    pageSize: number;
-    totalCount: number;
-    handlePageChange: (newPage: number) => void;
-};
-
-export const PaginationTableRow = ({currentPage, pageSize, totalCount, handlePageChange} : PaginationProps) => {
+export const PaginationTableRow = ({currentPage, pageSize, totalCount, handlePageChange} : IPaginationProps) => {
     const [startListCount, setStartListCount] = useState<number>(1);
     const [endListCount, setEndListCount] = useState<number>(pageSize);
     const calculateRemainingItems = totalCount % pageSize;

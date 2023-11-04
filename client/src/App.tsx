@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
-import Page404 from "./components/Page404";
-import Homepage from "./pages/Homepage";
-import Menu from "./pages/Menu";
+import { Page404 } from "./components/Page404";
+import { Homepage } from "./pages/Homepage";
+import { Menu } from "./pages/Menu";
 import BookService from "./pages/Customer/BookASeat";
 import CustomerReservations from "./pages/Customer/CustomerReservations";
-import SalonRegistration from "./pages/Salon/SalonRegistration";
-import Salon from "./pages/Salon/Salon";
-import SalonServices from "./pages/Salon/SalonServices";
-import SalonReservations from "./pages/Salon/SalonReservations";
-import SalonDetails from "./pages/Salon/SalonDetails";
-import About from "./pages/About";
-import Login from "./components/Authentication/Login";
-import Register from "./components/Authentication/Register";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import { SalonRegistration } from "./pages/Salon/SalonRegistration";
+import { Salon } from "./pages/Salon/Salon";
+import { SalonServices } from "./pages/Salon/SalonServices";
+import { SalonReservations } from "./pages/Salon/SalonReservations";
+import { SalonDetails } from "./pages/Salon/SalonDetails";
+import { About } from "./pages/About";
+import { Login } from "./components/Authentication/Login";
+import { Register } from "./components/Authentication/Register";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 import { useUserContext } from './hooks/useUserContext';
 
@@ -94,6 +94,6 @@ function App() {
         </Routes>
       </Router>
   );
-}
+};
 
 export default App;

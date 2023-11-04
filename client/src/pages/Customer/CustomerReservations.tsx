@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useUserContext } from '../../hooks/useUserContext';
 
+const RESERVATION_LIST_URL_STRING = process.env.REACT_APP_CUSTOMER_RESERVATION_LIST_URL;
+
 const CustomerReservations = () => {
   interface CustomerReservation {
     haircutDurationTime: string;
@@ -23,7 +25,7 @@ const CustomerReservations = () => {
     setIsFetch(true);
 
     try {
-      const response = await fetch('https://localhost:44315/api/reservation/reservations-list?customerId=' + userState.userId, {
+      const response = await fetch(RESERVATION_LIST_URL_STRING + '?customerId=' + userState.userId, {
         method: 'GET',
         credentials: 'include'
       });
@@ -71,7 +73,7 @@ const CustomerReservations = () => {
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.salonName}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.serviceName}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">${item.price}</td>
-              <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.haircutDurationTime}</td>
+              <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{Number(item.haircutDurationTime) / 60} minutes</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.reservationDay}</td>
               <td className="px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1">{item.reservationHour}</td>
               <td className={`px-2.5 tablet:px-4 laptop:px-7 py-5 flex-1 font-bold ${item.reservationId === 1? "text-green-500" : "text-red-500"}`}>{item.reservationId === 1 ? 'Completed' : 'Waiting'}</td>

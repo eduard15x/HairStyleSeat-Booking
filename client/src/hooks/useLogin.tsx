@@ -2,17 +2,21 @@ import { useState } from "react";
 import Cookie from 'js-cookie';
 import { useUserContext } from "./useUserContext";
 
+
+
+import { IUserCredentials } from "../shared/interfaces";
+
+
+
+
 export const useLogin = () => {
-    interface userCredentials {
-        email: string;
-        password: string;
-    };
 
     const { userState, dispatch } = useUserContext();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const login = async (user: userCredentials, loginUrl: string) => {
+    const login = async (user: IUserCredentials, loginUrl: string) => {
+        console.log(loginUrl)
         setIsLoading(true);
         setError(null);
 
@@ -23,6 +27,9 @@ export const useLogin = () => {
             body: JSON.stringify(user)
         });
         const json = await response.json();
+
+        console.log(response)
+        console.log(json)
 
         if (!response.ok) {
             setIsLoading(false);

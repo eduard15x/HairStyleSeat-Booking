@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Homepage = () => {
+export const Homepage = () => {
   return (
     <>
       <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-gray-400 flex flex-col items-center text-2xl tablet:text-3xl laptop:text-5xl">
@@ -9,7 +9,5 @@ const Homepage = () => {
         <Link to="about" className="hover:text-gray-200 mt-10 laptop:mt-14">About</Link>
       </div>
     </>
-  )
-}
-
-export default Homepage;
+  );
+};

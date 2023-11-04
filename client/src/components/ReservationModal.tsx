@@ -1,59 +1,26 @@
-import { useState, useEffect, ChangeEventHandler } from 'react';
-import { useUserContext } from '../hooks/useUserContext';
-
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { MdClose } from 'react-icons/md';
+import { useUserContext } from '../hooks/useUserContext';
+import { useCustomerReservationHandling } from '../hooks/useCustomerReservationHandling';
+import { hasZeroOrEmptyStringProperties, getFormaterDateUS } from '../utils/utils';
 import { TimePicker } from './TimePicker';
+import { IReservationModal, ISalonData, ISalonService, IReservationDetails } from '../shared/interfaces';
+import { CalendarDate } from '../shared/types';
+const SALON_DETAILS_URL_STRING = process.env.REACT_APP_SALON_DETAILS_URL;
+const SALON_SERVICES_LIST_URL_STRING = process.env.REACT_APP_SALON_SERVICES_LIST_URL;
+const CUSTOMER_MAKE_RESERVATION_URL = process.env.REACT_APP_CUSTOMER_MAKE_RESERVATION_URL;
 
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-interface ReservationModal {
-    showReservationModal: boolean;
-    handleReservationModal: () => void;
-    salonId: number;
-};
-
-interface SalonData {
-    endTimeHour: string;
-    salonAddress: string;
-    salonCity: string;
-    salonName: string;
-    salonReviews: number;
-    salonStatus: number;
-    startTimeHour: string;
-    userDetails: {
-        email: string;
-        phoneNumber: string;
-        userName: string;
-    },
-    workDays: string;
-};
-
-interface SalonService {
-    serviceId: number;
-    haircutDurationTime: string;
-    price: number;
-    serviceName: string;
-};
-
-// reservation details
-interface ReservationDetails {
-    userId: number;
-    salonId: number;
-    salonServiceId: number;
-    reservationDay: string;
-    reservationHour: string;
-};
-
-export const ReservationModal = ({showReservationModal, handleReservationModal, salonId}: ReservationModal) => {
-    
+export const ReservationModal = ({showReservationModal, handleReservationModal, salonId}: IReservationModal) => {
     const { userState } = useUserContext();
+    const { createReservation, errorNewReservation, isCreatingReservation, successMessage } = useCustomerReservationHandling();
+    // time picker
+    const startTime = new Date(2023, 0, 1, 5, 0); // Start time: 09:00
+    const endTime = new Date(2023, 0, 1, 23, 0); // End time: 17:00
+    const interval = 60; // Interval in minutes
 
-    const [reservationDetails, setReservationDetails] = useState<ReservationDetails>({
+    const [reservationDetails, setReservationDetails] = useState<IReservationDetails>({
         userId: 0,
         salonId: 0,
         salonServiceId: 0,
@@ -61,41 +28,20 @@ export const ReservationModal = ({showReservationModal, handleReservationModal, 
         reservationHour: "",
     });
 
-    const hasZeroOrEmptyStringProperties = (obj: any) => {
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (obj[key] === 0 || obj[key] === "") {
-                    console.log(key);
-                    return true; // Found a property that is 0 or an empty string
-                }
-            }
-        }
-        return false; // No properties with 0 or empty string found
-    };
-
-
-    
     const [selectedService, setSelectedService] = useState<string>("");
-
-
-
-
-    console.log(hasZeroOrEmptyStringProperties(reservationDetails));
-
-    const [salonData, setSalonData] = useState<SalonData | null>(null);
-    const [salonServicesData, setSalonServicesData] = useState<SalonService[] | []>([]);
+    const [salonData, setSalonData] = useState<ISalonData | null>(null);
+    const [salonServicesData, setSalonServicesData] = useState<ISalonService[] | []>([]);
     const [isFetch, setIsFetch] = useState<boolean>(false);
     const [error, setError] = useState<any | null>(null);
 
     //calendar
-    const [value, onChange] = useState<Value>(new Date());
+    const [calendarDate, setCalendarDate] = useState<CalendarDate>(new Date());
 
-    const originalDate = new Date(value!.toString());
-    const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // Add 1 to month since it's 0-based
-    const day = originalDate.getDate().toString().padStart(2, '0');
-    const year = originalDate.getFullYear();
-    const formattedDate = `${month}/${day}/${year}`;
-    console.log(formattedDate); // Output: "11/18/2023"
+    const handleTimeSelect = (selectedTime: any) => {
+        // Handle the selected time
+        console.log(`Selected time: ${selectedTime}`);
+        setReservationDetails({...reservationDetails, reservationHour: selectedTime})
+    };
 
 
     const getSalonDetails = async () => {
@@ -104,28 +50,21 @@ export const ReservationModal = ({showReservationModal, handleReservationModal, 
 
         try {
             const urls = [
-                `https://localhost:44315/api/salons/${salonId}`,
-                `https://localhost:44315/api/salons/${salonId}/services`
+                `${SALON_DETAILS_URL_STRING}${salonId}`,
+                `${SALON_SERVICES_LIST_URL_STRING}${salonId}/services`
             ];
 
-            setReservationDetails({...reservationDetails, userId: userState.userId, salonId: salonId})
-
+            setReservationDetails({...reservationDetails, userId: userState.userId, salonId: salonId});
             const responses = await Promise.all(urls.map((url) => fetch(url)));
             const data = await Promise.all(responses.map((response) => response.json()));
 
             setSalonData(data[0].value);
             setSalonServicesData(data[1].value);
-
-            console.log(data)
-            console.log(data[0])
-            console.log(data[1])
             setIsFetch(false);
-
-          } catch (error) {
+        } catch (error) {
             setIsFetch(false);
             setError(error);
-            // setIsFetch(false);
-          }
+        }
     };
 
     useEffect(() => {
@@ -133,59 +72,6 @@ export const ReservationModal = ({showReservationModal, handleReservationModal, 
             getSalonDetails();
         }
     }, [salonId]);
-
-
-
-    // time picker
-    const startTime = new Date(2023, 0, 1, 5, 0); // Start time: 09:00
-    const endTime = new Date(2023, 0, 1, 23, 0); // End time: 17:00
-    const interval = 60; // Interval in minutes
-
-  const handleTimeSelect = (selectedTime: any) => {
-    // Handle the selected time
-    console.log(`Selected time: ${selectedTime}`);
-    setReservationDetails({...reservationDetails, reservationHour: selectedTime})
-  };
-
-
-  console.log(reservationDetails);
-
-
-
-  
-  const [isFetchReservation, setIsFetchReservation] = useState<boolean>(false);
-  const [newReservationError, setNewReservationError] = useState<any | null>(null);
-
-  const createNewReservation = async () => {
-    setReservationDetails({...reservationDetails, reservationDay: formattedDate})
-    setIsFetchReservation(true);
-    setNewReservationError(null);
-
-    try {
-        const response = await fetch('https://localhost:44315/api/reservation/make-reservation', {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            credentials: 'include',
-            body: JSON.stringify(reservationDetails)
-        });
-
-        const json = await response.json();
-        console.log(json);
-
-        if (json.statusCode >= 400) {
-            setNewReservationError(json.value);
-        } else {
-            console.log("SUCCEEESSS")
-            handleReservationModal();
-        }
-
-        setIsFetchReservation(false);
-    } catch(error) {
-        console.log(error);
-        setIsFetchReservation(false);
-        setNewReservationError(error);
-    }
-  };
 
   return (
     showReservationModal === true
@@ -264,10 +150,10 @@ export const ReservationModal = ({showReservationModal, handleReservationModal, 
                                 <div className='flex-1 w-1/2'>
                                     <Calendar
                                         onChange={(e) => {
-                                            onChange(e);
-                                            setReservationDetails({...reservationDetails, reservationDay: formattedDate});
+                                            setCalendarDate(e);
+                                            setReservationDetails({...reservationDetails, reservationDay: getFormaterDateUS(calendarDate!.toString())});
                                         }}
-                                        value={value} />
+                                        value={calendarDate} />
                                 </div>
                                 <div className='flex-1 w-1/2 pl-8'>
                                     <TimePicker startTime={startTime} endTime={endTime} interval={interval} onTimeSelect={handleTimeSelect} />
@@ -276,14 +162,15 @@ export const ReservationModal = ({showReservationModal, handleReservationModal, 
                         </div>
 
                         <button
-                            disabled={hasZeroOrEmptyStringProperties(reservationDetails) || isFetchReservation}
-                            onClick={createNewReservation}
+                            disabled={hasZeroOrEmptyStringProperties(reservationDetails) || isCreatingReservation}
+                            onClick={() => createReservation(reservationDetails, CUSTOMER_MAKE_RESERVATION_URL!)}
                             className={`bg-[#006edc] text-white flex m-auto py-2 px-4 mt-6
-                            ${hasZeroOrEmptyStringProperties(reservationDetails) || isFetchReservation ? "bg-[#006edc67]" : "active:scale-95" }`}
+                            ${hasZeroOrEmptyStringProperties(reservationDetails) || isCreatingReservation ? "bg-[#006edc56]" : "active:scale-95" }`}
                         >
                             Create Reservation
                         </button>
-                        {newReservationError !== null ? <p className='text-center text-red-600 font-bold'>{newReservationError}</p> : null}
+                        {errorNewReservation !== null ? <p className='text-center text-red-600 font-bold'>{errorNewReservation}</p> : null}
+                        {successMessage !== null ? <p className='text-center text-green-600 font-bold'>{successMessage}</p> : null}
                     </>
                     : <p>{error}</p>
                 )

@@ -1,28 +1,17 @@
 import { createContext, useReducer, useEffect, useState } from "react";
 import Cookie from 'js-cookie';
 
-interface User {
-    userId: number;
-    userEmail: string | undefined;
-    userRole: string | undefined
-};
+import { IUser, IUserAction } from "../shared/interfaces";
 
 // The dummy user object used for this example
 // Try to set this from localStorage
-const initialUserState: User ={
+const initialUserState: IUser ={
     userId: 0,
     userEmail: undefined,
     userRole: undefined
 }
 
-type UserAction = {
-    type: 'LOGIN' | 'LOGOUT';
-    userId: number;
-    email: string;
-    role: string;
-  };
-
-const userReducer = (state: User, action: UserAction): User => {
+const userReducer = (state: IUser, action: IUserAction): IUser => {
     switch(action.type) {
         case 'LOGIN':
             return {
@@ -43,7 +32,7 @@ const userReducer = (state: User, action: UserAction): User => {
 /**
  * Creating the Application state context for the provider
  */
-export const UserContext = createContext<{ userState: User; dispatch: React.Dispatch<UserAction> }>({
+export const UserContext = createContext<{ userState: IUser; dispatch: React.Dispatch<IUserAction> }>({
     userState: initialUserState,
     dispatch: () => undefined,
 });

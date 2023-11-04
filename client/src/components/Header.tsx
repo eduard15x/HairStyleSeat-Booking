@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { TbLogout2 } from 'react-icons/tb';
 import { useLogout } from '../hooks/useLogout';
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const { logout, isLoading, userState } = useLogout();
   console.log(userState);
 
@@ -13,5 +13,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;

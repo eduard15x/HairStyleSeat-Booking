@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+import { IUserRegisterCredentials } from "../shared/interfaces";
+
 export const useRegister = () => {
-  interface IUserRegisterCredentials {
-    UserName: string;
-    Email: string;
-    Password: string;
-    ConfirmPassword: string;
-    City: string;
-    PhoneNumber: string;
-  };
 
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);

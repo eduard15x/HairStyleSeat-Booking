@@ -6,6 +6,8 @@ import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { ReservationModal } from '../../components/ReservationModal';
 
+const SALON_LIST_URL_STRING = process.env.REACT_APP_SALON_LIST_URL;
+
 // TODO - refactoring
 const BookASeat = () => {
 
@@ -75,7 +77,7 @@ const BookASeat = () => {
 
     try {
       const response = await fetch(`
-      https://localhost:44315/api/salons/list?page=${currentPage}&pageSize=${pageSize}&search=${encodeURIComponent(searchString.trim())}&selectedCities=${selectedCities.join(',')}
+      ${SALON_LIST_URL_STRING}?page=${currentPage}&pageSize=${pageSize}&search=${encodeURIComponent(searchString.trim())}&selectedCities=${selectedCities.join(',')}
       `, {
         method: 'GET',
       });

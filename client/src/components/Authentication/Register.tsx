@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../../hooks/useRegister';
+const REGISTER_URL_STRING = process.env.REACT_APP_REGISTER_URL;
 
-const Register: React.FC = () => {
+export const Register: React.FC = () => {
   const { register, isLoading, error, successMessage} = useRegister();
   const [newUser, setNewUser] = useState(
     {
@@ -16,7 +17,7 @@ const Register: React.FC = () => {
   );
   const submitRegisterForm = async (e: React.FormEvent<HTMLFormElement> ) => {
     e.preventDefault();
-    register(newUser, 'https://localhost:44315/api/user/register');
+    register(newUser, REGISTER_URL_STRING!);
   };
 
   const updateNewUserObj = (e: React.ChangeEvent<HTMLInputElement>, property: string) => {
@@ -112,5 +113,3 @@ const Register: React.FC = () => {
     </>
   );
 };
-
-export default Register;

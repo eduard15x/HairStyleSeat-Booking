@@ -1,6 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 
-const Salon = () => {
+export const Salon = () => {
   return (
     <div>
       <Link to="details">Details</Link>
@@ -8,7 +8,5 @@ const Salon = () => {
       <Link to="services">Services</Link>
       <Outlet />
     </div>
-  )
-}
-
-export default Salon;
+  );
+};

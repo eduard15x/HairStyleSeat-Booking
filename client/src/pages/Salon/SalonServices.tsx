@@ -1,7 +1,5 @@
-const SalonServices = () => {
+export const SalonServices = () => {
   return (
     <div>SalonServices</div>
-  )
-}
-
-export default SalonServices;
+  );
+};
