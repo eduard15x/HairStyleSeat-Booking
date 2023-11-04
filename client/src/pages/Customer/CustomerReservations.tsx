@@ -45,7 +45,7 @@ const CustomerReservations = () => {
   }, [])
 
   return (
-    <div>
+    <div className='min-h-[calc(100vh-100px-50px)]'>
       <h1 className="text-gray-200 text-base desktop:text-2xl text-center pb-8 mt-4">
         Reservations
       </h1>

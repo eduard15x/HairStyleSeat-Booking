@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <>
+    <div className='min-h-[calc(100vh-100px)]'>
       <h1 className="text-gray-200 text-2xl tablet:text-4xl text-center pb-10 mt-6">
         Login
       </h1>
@@ -70,6 +70,6 @@ export const Login: React.FC = () => {
           <Link to="/register" className='w-8/12 mx-auto hover:text-gray-200'>Register now</Link>
         </div>
       </form>
-    </>
+    </div>
   );
 };

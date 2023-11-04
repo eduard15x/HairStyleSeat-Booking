@@ -101,7 +101,7 @@ const BookASeat = () => {
   console.log(salonId)
 
   return (
-    <div>
+    <div className='min-h-[calc(100vh-100px-50px)]'>
       <h1 className="text-gray-200 text-2xl tablet:text-2xl text-center pb-10 mt-6">
         Salon List
       </h1>

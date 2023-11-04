@@ -20,6 +20,15 @@ import { useUserContext } from './hooks/useUserContext';
 function App() {
   const { userState } = useUserContext();
 
+  const HomepageLayout = () => {
+    return (
+      <div>
+        <Outlet />
+        <Footer />
+      </div>
+    );
+  };
+
   const MenuLayout = () => {
     return (
       <div>
@@ -45,12 +54,12 @@ function App() {
 
           {userState.userId === 0
           ?
-          <>
-            <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<HomepageLayout />}>
+            <Route index element={<Homepage />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="about" element={<About />} />
-          </>
+          </Route>
           :
           <>
             <Route path="/" element={<Navigate to="/menu" />} />

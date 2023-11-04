@@ -1,10 +1,7 @@
-import { Footer } from '../components/Footer';
-
 export const About = () => {
   return (
-    <div>
+    <div className="min-h-[calc(100vh-100px)]">
       <h1>test</h1>
-      <Footer />
     </div>
   );
 };
