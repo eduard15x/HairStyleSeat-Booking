@@ -177,20 +177,38 @@ namespace backend.Repositories.SalonRepository
                     PhoneNumber = salonDetails.User.PhoneNumber,
                 },
                 StartTimeHour = salonDetails.StartTimeHour,
-                EndTimeHour = salonDetails.EndTimeHour
+                EndTimeHour = salonDetails.EndTimeHour,
+                SalonStatus = salonDetails.StatusId
             };
         }
-        public async Task<int> GetSingleSalonDetailsForUser(int currentUserId)
+        public async Task<GetSingleSalonDto> GetSingleSalonDetailsForUser(int currentUserId)
         {
             var salonDetails = await _context.Salons
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.UserId == currentUserId);
 
             if (salonDetails == null)
             {
-                return 0;
+                return null;
             }
 
-            return salonDetails.StatusId;
+            return new GetSingleSalonDto
+            {
+                SalonName = salonDetails.SalonName,
+                SalonCity = salonDetails.SalonCity,
+                SalonAddress = salonDetails.SalonAddress,
+                WorkDays = salonDetails.WorkDays,
+                SalonReviews = salonDetails.SalonReviews,
+                UserDetails = new UsersSalonsDetailsDto
+                {
+                    UserName = salonDetails.User.UserName,
+                    Email = salonDetails.User.Email,
+                    PhoneNumber = salonDetails.User.PhoneNumber,
+                },
+                StartTimeHour = salonDetails.StartTimeHour,
+                EndTimeHour = salonDetails.EndTimeHour,
+                SalonStatus = salonDetails.StatusId
+            };
         }
 
         public async Task<string> SetWorkDays(SetWorkDaysDto workDaysDto)

@@ -114,7 +114,7 @@ namespace backend.Services.SalonService
             return await _salonRepository.GetSingleSalonDetails(salonId);
         }
 
-        public async Task<int> GetSingleSalonDetailsForUser()
+        public async Task<GetSingleSalonDto> GetSingleSalonDetailsForUser()
         {
             var currentUserID = GetUserId();
 

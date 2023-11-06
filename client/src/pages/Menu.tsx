@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const GET_SALON_STATUS_URL_STRING = process.env.REACT_APP_GET_SALON_STATUS_URL;
+const GET_SALON_DETAILS_FOR_USER_URL_STRING = process.env.REACT_APP_GET_SALON_DETAILS_FOR_USER_URL;
 
 export const Menu = () => {
   const [salonStatus, setSalonStatus] = useState<number>(0);
@@ -8,17 +8,18 @@ export const Menu = () => {
   const getSalonStatus = async () => {
     try {
 
-      const response = await fetch(GET_SALON_STATUS_URL_STRING!, {
+      const response = await fetch(GET_SALON_DETAILS_FOR_USER_URL_STRING!, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
         credentials: 'include',
       });
       const json = await response.json();
+      console.log(json)
 
       if (json.statusCode >= 400) {
         setSalonStatus(0);
       } else {
-        setSalonStatus(json.value);
+        setSalonStatus(json.value.salonStatus);
       }
 
     } catch (error) {
@@ -27,7 +28,6 @@ export const Menu = () => {
     }
   };
 
-  getSalonStatus();
   const userAdditionalInfo = salonStatus === 0 || salonStatus === 2 || salonStatus === 3
   ? {
     name: 'Become an affiliate',
@@ -36,6 +36,10 @@ export const Menu = () => {
     name: 'Your salon',
     path: 'salon'
   };
+
+  useEffect(() => {
+    getSalonStatus();
+  }, [salonStatus]);
 
   return (
     <div className="w-full min-h-[calc(100vh-100px-50px)] text-gray-400 flex justify-center flex-col items-center text-2xl tablet:text-3xl laptop:text-5xl">

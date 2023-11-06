@@ -6,7 +6,8 @@ import { ISalonRegistration } from '../../shared/interfaces';
 import { hasZeroOrEmptyStringProperties } from '../../utils/utils';
 
 const REGISTER_NEW_SALON_URL_STRING = process.env.REACT_APP_REGISTER_NEW_SALON_URL;
-const GET_SALON_STATUS_URL_STRING = process.env.REACT_APP_GET_SALON_STATUS_URL;
+const GET_SALON_DETAILS_FOR_USER_URL_STRING = process.env.REACT_APP_GET_SALON_DETAILS_FOR_USER_URL;
+
 const WEEK_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 const WORK_HOURS = ["06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
 
@@ -58,7 +59,7 @@ export const SalonRegistration = () => {
   const getSalonStatus = async () => {
     try {
 
-      const response = await fetch(GET_SALON_STATUS_URL_STRING!, {
+      const response = await fetch(GET_SALON_DETAILS_FOR_USER_URL_STRING!, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
         credentials: 'include',
@@ -68,7 +69,7 @@ export const SalonRegistration = () => {
       if (json.statusCode >= 400) {
         setSalonStatus(0);
       } else {
-        setSalonStatus(json.value);
+        setSalonStatus(json.value.salonStatus);
       }
 
       setIsLoading(false);
