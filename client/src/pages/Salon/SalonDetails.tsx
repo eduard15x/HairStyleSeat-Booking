@@ -282,6 +282,9 @@ export const SalonDetails = () => {
         <label htmlFor="phoneNumber" className="block text-base font-medium text-gray-800">Phone Number</label>
         <input defaultValue={salonData?.userDetails.phoneNumber} onChange={(e) => updateFormFields(e, "phoneNumber")}  id="phoneNumber" name="phoneNumber" type="text" autoComplete="phoneNumber" className="px-2 my-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
 
+        <label htmlFor="email" className="block text-base font-medium text-gray-800 mt-4">Contact email</label>
+        <input defaultValue={salonData?.userDetails.email} id="email" name="email" type="email" autoComplete="email" readOnly className="px-2 my-3 block w-full rounded-md border-0 py-1.5 text-gray-500 focus:outline-none brightness-95" />
+
         <button
           disabled={hasZeroOrEmptyStringProperties(updateUserData) || isFetching}
           title={hasZeroOrEmptyStringProperties(updateUserData) ? "Please complete all fields" : ""}
