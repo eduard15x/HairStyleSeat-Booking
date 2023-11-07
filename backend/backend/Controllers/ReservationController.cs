@@ -36,7 +36,7 @@ namespace backend.Controllers
         }
 
         [Authorize(Roles = "admin, customer, affiliate, employee")]
-        [HttpGet("reservations-list")]
+        [HttpGet("customer-reservation-list")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> GetAllCustomerReservations(int customerId)
@@ -44,6 +44,23 @@ namespace backend.Controllers
             try
             {
                 var response = await _reservationService.GetAllCustomerReservations(customerId);
+                return Json(Ok(response));
+            }
+            catch (Exception ex)
+            {
+                return Json(Conflict(ex.Message));
+            }
+        }
+
+        [Authorize(Roles = "admin, affiliate, employee")]
+        [HttpGet("salon-reservation-list")]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> GetAllSalonReservations(int salonAffiliateId)
+        {
+            try
+            {
+                var response = await _reservationService.GetAllSalonReservations(salonAffiliateId);
                 return Json(Ok(response));
             }
             catch (Exception ex)

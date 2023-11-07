@@ -96,6 +96,46 @@ namespace backend.Repositories.ReservationRepository
             return customerReservationsList;
         }
 
+        public async Task<List<GetReservationDetailsForSalonDto>> GetAllSalonReservations(int salonAffiliateId)
+        {
+            var userFromDb = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == salonAffiliateId);
+            if (userFromDb is null)
+                throw new Exception("User doesn't exists");
+            
+            if (userFromDb.Role == "customer")
+                throw new Exception("Not authorized");
+
+            var salonFromDb = await _applicationDbContext.Salons.FirstOrDefaultAsync(s => s.UserId == salonAffiliateId);
+            if (salonFromDb is null)
+                throw new Exception("Salon not available for current user.");
+
+            var salonReservationsFromDb = await _applicationDbContext.Reservations
+                .Where(r => r.SalonId == salonFromDb.Id)
+                .Include(r => r.Salon) // Include SalonService for the join
+                                       //.ThenInclude(s => s.Services)  // Include Salon for the join
+                .ToListAsync();
+
+            if (salonReservationsFromDb.Count == 0 || salonReservationsFromDb is null)
+                return new List<GetReservationDetailsForSalonDto>();
+
+            var customerReservationsList = salonReservationsFromDb
+                .Select(reservation => new GetReservationDetailsForSalonDto
+                {
+                    ReservationId = reservation.Id,
+                    SalonId = reservation.SalonId,
+                    SalonServiceId = reservation.ServiceId,
+                    ServiceName = reservation.ServiceName,
+                    Price = reservation.Price,
+                    HaircutDurationTime = reservation.HaircutDurationTime,
+                    ReservationDay = reservation.ReservationDay,
+                    ReservationHour = reservation.ReservationHour,
+                    ReservationSubmittedDate = reservation.BookSubmitDate
+                })
+                .ToList();
+
+            return customerReservationsList;
+        }
+
         public async Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId)
         {
             var userFromDb = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == customerId);
