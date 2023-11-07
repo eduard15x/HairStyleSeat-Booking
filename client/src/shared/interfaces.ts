@@ -43,6 +43,7 @@ export interface IReservationModal {
 };
 
 export interface ISalonData {
+    salonId: number;
     endTimeHour: string;
     salonAddress: string;
     salonCity: string;
@@ -57,6 +58,7 @@ export interface ISalonData {
     },
     workDays: string;
 };
+
 
 export interface ISalonService {
     serviceId: number;
@@ -111,4 +113,17 @@ export interface ISalonRegistration {
     workDays: string;
     startTimeHour: string;
     endTimeHour: string;
+};
+
+
+export interface ISalonUpdateData extends ISalonRegistration {
+    id: number;
+};
+
+
+export interface IUserUpdateDate {
+    id: number;
+    userName: string;
+    city: string;
+    phoneNumber: string;
 };
