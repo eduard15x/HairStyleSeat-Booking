@@ -4,6 +4,7 @@ namespace backend.Dtos.Salon
 {
     public class GetSingleSalonDto
     {
+        public int SalonId { get; set; }
         public string SalonName { get; set; }
         public string SalonCity { get; set; }
         public string SalonAddress { get; set; }

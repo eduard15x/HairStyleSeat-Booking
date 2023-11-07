@@ -98,8 +98,8 @@ namespace backend.Repositories.SalonRepository
             }
 
             existingSalon.SalonAddress = updateSalonDto.SalonAddress;
-            existingSalon.SalonCity = updateSalonDto.SalonAddress;
-            existingSalon.WorkDays = updateSalonDto.SalonAddress;
+            existingSalon.SalonCity = updateSalonDto.SalonCity;
+            existingSalon.WorkDays = updateSalonDto.WorkDays;
             existingSalon.StartTimeHour = updateSalonDto.StartTimeHour;
             existingSalon.EndTimeHour = updateSalonDto.EndTimeHour;
 
@@ -107,10 +107,12 @@ namespace backend.Repositories.SalonRepository
 
             return new GetSingleSalonDto
             {
+                SalonId = existingSalon.Id,
                 SalonName = existingSalon.SalonName,
                 SalonCity = existingSalon.SalonCity,
                 SalonAddress = existingSalon.SalonAddress,
                 WorkDays = existingSalon.WorkDays,
+                SalonStatus = existingSalon.StatusId,
                 SalonReviews = existingSalon.SalonReviews,
                 UserDetails = new UsersSalonsDetailsDto
                 {
@@ -165,6 +167,7 @@ namespace backend.Repositories.SalonRepository
 
             return new GetSingleSalonDto
             {
+                SalonId = salonDetails.Id,
                 SalonName = salonDetails.SalonName,
                 SalonCity = salonDetails.SalonCity,
                 SalonAddress = salonDetails.SalonAddress,
@@ -194,6 +197,7 @@ namespace backend.Repositories.SalonRepository
 
             return new GetSingleSalonDto
             {
+                SalonId = salonDetails.Id,
                 SalonName = salonDetails.SalonName,
                 SalonCity = salonDetails.SalonCity,
                 SalonAddress = salonDetails.SalonAddress,
