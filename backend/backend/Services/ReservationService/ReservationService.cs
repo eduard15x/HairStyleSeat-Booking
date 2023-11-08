@@ -46,13 +46,13 @@ namespace backend.Services.ReservationService
             return await _reservationRepository.GetAllCustomerReservations(customerId);
         }
 
-        public async Task<List<GetReservationDetailsForSalonDto>> GetAllSalonReservations(int salonAffiliateId)
+        public async Task<GetSalonReservationListDto> GetAllSalonReservations(int salonAffiliateId, int page, int pageSize)
         {
             var currentUserId = GetUserId();
             if (salonAffiliateId <= 0 || currentUserId != salonAffiliateId)
                 throw new Exception("Not authorized.");
 
-            return await _reservationRepository.GetAllSalonReservations(salonAffiliateId);
+            return await _reservationRepository.GetAllSalonReservations(salonAffiliateId, page, pageSize);
         }
 
 

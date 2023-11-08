@@ -1,8 +1,10 @@
 ﻿using backend.Data;
 using backend.Dtos.Reservation;
+using backend.Dtos.Salon;
 using backend.Helpers;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace backend.Repositories.ReservationRepository
 {
@@ -96,7 +98,7 @@ namespace backend.Repositories.ReservationRepository
             return customerReservationsList;
         }
 
-        public async Task<List<GetReservationDetailsForSalonDto>> GetAllSalonReservations(int salonAffiliateId)
+        public async Task<GetSalonReservationListDto> GetAllSalonReservations(int salonAffiliateId, int page, int pageSize)
         {
             var userFromDb = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == salonAffiliateId);
             if (userFromDb is null)
@@ -109,19 +111,29 @@ namespace backend.Repositories.ReservationRepository
             if (salonFromDb is null)
                 throw new Exception("Salon not available for current user.");
 
-            var salonReservationsFromDb = await _applicationDbContext.Reservations
+            var query = _applicationDbContext.Reservations
                 .Where(r => r.SalonId == salonFromDb.Id)
-                .Include(r => r.Salon) // Include SalonService for the join
-                                       //.ThenInclude(s => s.Services)  // Include Salon for the join
-                .ToListAsync();
+                .Include(r => r.Salon);
 
-            if (salonReservationsFromDb.Count == 0 || salonReservationsFromDb is null)
-                return new List<GetReservationDetailsForSalonDto>();
+            var totalItemCount = await query.CountAsync();
+
+            if (totalItemCount == 0)
+                return new GetSalonReservationListDto
+                {
+                    Reservations = new List<GetReservationDetailsForSalonDto>(),
+                    TotalReservations = totalItemCount
+                };
+
+            var salonReservationsFromDb = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             var customerReservationsList = salonReservationsFromDb
                 .Select(reservation => new GetReservationDetailsForSalonDto
                 {
                     ReservationId = reservation.Id,
+                    UserId = reservation.UserId,
                     SalonId = reservation.SalonId,
                     SalonServiceId = reservation.ServiceId,
                     ServiceName = reservation.ServiceName,
@@ -129,11 +141,16 @@ namespace backend.Repositories.ReservationRepository
                     HaircutDurationTime = reservation.HaircutDurationTime,
                     ReservationDay = reservation.ReservationDay,
                     ReservationHour = reservation.ReservationHour,
+                    IsReservationCompleted = reservation.CompletedReservation,
                     ReservationSubmittedDate = reservation.BookSubmitDate
                 })
                 .ToList();
 
-            return customerReservationsList;
+            return new GetSalonReservationListDto
+            {
+                Reservations = customerReservationsList,
+                TotalReservations = totalItemCount
+            };
         }
 
         public async Task<GetReservationDetailsCustomerDto> GetCustomerReservationDetails(int customerId, int reservationId)

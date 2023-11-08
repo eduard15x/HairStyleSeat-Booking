@@ -56,11 +56,11 @@ namespace backend.Controllers
         [HttpGet("salon-reservation-list")]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(JsonResult), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetAllSalonReservations(int salonAffiliateId)
+        public async Task<ActionResult> GetAllSalonReservations(int salonAffiliateId, int page, int pageSize)
         {
             try
             {
-                var response = await _reservationService.GetAllSalonReservations(salonAffiliateId);
+                var response = await _reservationService.GetAllSalonReservations(salonAffiliateId, page, pageSize);
                 return Json(Ok(response));
             }
             catch (Exception ex)
