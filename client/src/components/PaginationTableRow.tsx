@@ -53,14 +53,14 @@ export const PaginationTableRow = ({currentPage, pageSize, totalCount, handlePag
         <td>
             <button
                 disabled={prevBtnDisabled}
-                className={`px-5 py-2 font-medium text-white bg-gray-800 rounded-l ${prevBtnDisabled ? "text-gray-600 bg-gray-800" : "hover:bg-gray-900"}`}
+                className={`px-5 py-2 font-medium text-white bg-gray-800 rounded-l ${prevBtnDisabled ? "text-gray-600 brightness-[60%]" : "hover:bg-gray-900"}`}
                 onClick={prevPage}
             >
                 Prev
             </button>
             <button
                 disabled={nextBtnDisabled}
-                className={`px-5 py-2 font-medium text-white bg-gray-800 border-l border-gray-700 rounded-r ${nextBtnDisabled ? "text-gray-600 bg-gray-900" : "hover:bg-gray-900"}`}
+                className={`px-5 py-2 font-medium text-white bg-gray-800 border-l  rounded-r ${nextBtnDisabled ? "text-gray-600 brightness-[60%]" : "hover:bg-gray-900"}`}
                 onClick={nextPage}
             >
                 Next
