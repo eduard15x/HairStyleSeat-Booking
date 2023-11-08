@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../hooks/useUserContext";
+import { BackPageButton } from "../../components/BackPageButton";
 const GET_SALON_RESERVATION_LIST_URL_STRING = process.env.REACT_APP_SALON_RESERVATION_LIST_URL;
 
 const strings = "?salonAffiliateId=2"
