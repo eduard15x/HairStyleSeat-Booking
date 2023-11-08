@@ -1,30 +1,21 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../hooks/useUserContext";
 
-const GET_SALON_RESERVATION_LIST_URL_STRING = process.env.REACT_APP_SALON_RESERVATION_LIST_URL;
 const GET_SALON_DETAILS_FOR_USER = process.env.REACT_APP_GET_SALON_DETAILS_FOR_USER_URL;
 const GET_SALON_SERVICES_LIST_URL_STRING = process.env.REACT_APP_SALON_SERVICES_LIST_URL;
 
-
-const strings = "?salonAffiliateId=2"
-
-
-
-// ${SALON_SERVICES_LIST_URL_STRING}${salonId}/services`
-
-
 export const SalonServices = () => {
+  // TODO - interface for services list
   const { userState } = useUserContext();
+  const [salonServices, setSalonServices] = useState<any>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
-  const [el, setEl] = useState<number>(0);
 
 
   const getSalonServices = async () => {
     setError(null);
     setIsLoading(true);
-    setEl(0);
 
     try {
       const response1 = await fetch(GET_SALON_DETAILS_FOR_USER!, {
@@ -47,15 +38,14 @@ export const SalonServices = () => {
         credentials: "include"
       });
       const json2 = await response2.json();
-
       console.log(response2);
       console.log(json2);
-      
+
       if (json2.statusCode >= 400) {
         setError(json2.value);
         console.error(json2.value);
       } else {
-        setEl(json2.value.length);
+        setSalonServices(json2.value);
       }
 
     } catch (error) {
@@ -64,7 +54,7 @@ export const SalonServices = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getSalonServices();
   }, []);
@@ -86,20 +76,61 @@ export const SalonServices = () => {
     </svg>
   </div>
 
-
-  const renderedElement = el !== 0 ? <p>This is ok, multiple values</p> : (error !== null ? <p>{error}</p> : <p>No values, 0 lengt</p>);
-
+  const renderElement = salonServices.length > 0
+  ?
+  <div className="flex flex-col w-full max-w-[768px] mx-auto text-base px-10">
+    <p className="text-lg mb-4">Total services: {salonServices.length}</p>
+    {
+      salonServices.map((item: any) => (
+        <div key={item.serviceId} data-service-id={item.serviceId} className="mb-5 py-2 px-4 flex flex-row justify-between items-center bg-[#262828] border border-[#3b3f3f] rounded-md">
+          <div className="">
+            <p className="flex"><span className="min-w-[150px]">Service Name</span> {item.serviceName}</p>
+            <p className="flex my-2"><span className="min-w-[150px]">Service Price</span> ${item.price}</p>
+            <p className="flex"><span className="min-w-[150px]">Service Duration</span> {item.haircutDurationTime}</p>
+          </div>
+          <div className="flex flex-col">
+            <button className="px-5 py-1 mb-2 rounded-md bg-green-700 hover:brightness-125 active:scale-95">Modify</button>
+            <button className="px-5 py-1 mt-2 rounded-md bg-red-700 hover:brightness-125 active:scale-95">Delete</button>
+          </div>
+        </div>
+      ))
+    }
+    <div className="mt-8 py-2 px-5 flex flex-row justify-between items-center bg-[#262828] border border-[#3b3f3f] rounded-md">
+      <div className="">
+        <p className="flex">
+          <span className="min-w-[150px]">Service Name</span>
+          <input type="text" placeholder="Name" className="px-2 bg-[#313434] border border-[#434949]" />
+        </p>
+        <p className="flex my-2">
+          <span className="min-w-[150px]">Service Price</span>
+          <input type="number" placeholder="Price" className="px-2 bg-[#313434] border border-[#434949]"/>
+        </p>
+        <p className="flex">
+          <span className="min-w-[150px]">Service Duration</span>
+          <select className="text-gray-300 px-2 py-0.5 bg-[#313434] border border-[#434949] rounded-md">
+            <option value="">Duration</option>
+            <option value="1">30 minutes</option>
+            <option value="2">45 minutes</option>
+            <option value="2">60 minutes</option>
+          </select>
+        </p>
+      </div>
+      <div className="flex flex-col">
+        <button className="px-5 py-1 mb-2 rounded-md bg-blue-700 hover:brightness-125 active:scale-95">Add new service</button>
+      </div>
+    </div>
+  </div>
+  :
+  <p>No services</p>
 
   return (
     <div className='w-full min-h-[calc(100vh-100px-50px)] text-gray-200'>
       <h1 className='text-gray-200 text-2xl tablet:text-2xl text-center pb-12 mt-4'>Salon Services</h1>
-
       {
         isLoading
         ? loadingAnimation
-        : renderedElement
+        : renderElement
       }
-
     </div>
   );
 };
